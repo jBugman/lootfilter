@@ -24,7 +24,7 @@ type Filter struct {
 
 	Chance BaseTypes
 
-	Leveling4L bool
+	LevelingHideNon4L bool
 }
 
 func (f Filter) virtualSections() []section {
@@ -59,27 +59,30 @@ func (f Filter) virtualSections() []section {
 				block: block{
 					Visibility: Hide,
 
+					Class: append(PresetGear, PresetShield...),
+
 					BaseEvasion:      CmpGT("0"),
 					BaseArmour:       CmpEQ("0"),
 					BaseEnergyShield: CmpEQ("0"),
 				},
-				Gear:          true,
 				NonInfluenced: true,
 				Hide:          HideFully,
 			},
 		)
 	}
 
-	if f.Leveling4L {
+	if f.LevelingHideNon4L {
 		ss = append(ss,
 			section{
 				block: block{
-					Visibility:    Hide,
+					Visibility: Hide,
+
+					Class: PresetGear,
+
 					Rarity:        CmpLT(string(RarityUnique)),
 					LinkedSockets: CmpLT("4"),
 				},
 				Hide:          HideClickable,
-				Gear:          true,
 				NonInfluenced: true,
 			},
 		)
@@ -119,9 +122,6 @@ type section struct {
 	OneHanded bool
 	TwoHanded bool
 
-	Gear   bool
-	Shield bool
-
 	NonInfluenced bool
 
 	Hide hideLevel
@@ -137,10 +137,6 @@ const (
 )
 
 func (sec section) String() string {
-	if sec.Gear {
-		sec.Class = Classes{"Helmet", "Body armour", "Gloves", "Boots"}
-	}
-
 	if sec.NonInfluenced {
 		sec.ElderItem = FALSE
 		sec.ShaperItem = FALSE

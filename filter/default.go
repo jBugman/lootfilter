@@ -21,7 +21,7 @@ var defaultFilter = Filter{
 
 	Chance: BaseTypes{"Champion Kite Shield", "Ezomyte Dagger", "Fiend Dagger", "Prophecy Wand"},
 
-	Leveling4L: true,
+	LevelingHideNon4L: true,
 }
 
 // Default is default SSF filter config.
