@@ -22,8 +22,20 @@ type color string
 
 const (
 	ColorZero color = "0 0 0 0"
-	ColorRGB  color = "235 235 235 255"
-	ColorBG   color = "51 51 51 255" // #333
+
+	ColorChrome color = "235 235 235 255"
+	ColorChance color = "33 103 33 255"
+
+	ColorBG color = "51 51 51 255" // #333
+)
+
+type rarity string
+
+const (
+	RarityNormal rarity = "Normal"
+	RarityMagic  rarity = "Magic"
+	RarityRare   rarity = "Rare"
+	RarityUnique rarity = "Unique"
 )
 
 type cmp struct {
@@ -65,12 +77,22 @@ func (c class) String() string {
 	return `"` + string(c) + `"`
 }
 
-type classes []string
+type Classes []string
 
-func (c classes) String() string {
+func (c Classes) String() string {
 	cs := make([]string, len(c))
 	for i := range c {
 		cs[i] = `"` + c[i] + `"`
+	}
+	return strings.Join(cs, " ")
+}
+
+type BaseTypes []string
+
+func (bt BaseTypes) String() string {
+	cs := make([]string, len(bt))
+	for i := range bt {
+		cs[i] = `"` + bt[i] + `"`
 	}
 	return strings.Join(cs, " ")
 }
@@ -79,7 +101,10 @@ type block struct {
 	Visibility visibility
 	Continue   bool
 
-	Class classes
+	Class     Classes
+	BaseTypes BaseTypes
+
+	Rarity *cmp
 
 	SocketGroup string
 
@@ -115,10 +140,14 @@ func initBlockTemplate() {
 	blockTemplate = *template.Must(template.New("section").Parse(`{{ .Visibility }}
 	{{- if .Class }}
 	Class {{ .Class }}{{- end}}
+	{{- if .BaseTypes }}
+	BaseTypes {{ .BaseTypes }}{{- end}}
+	{{- if .Rarity }}
+	Rarity {{ .Rarity }}{{- end }}
 	{{- if .ElderItem }}
-	ElderItem true{{- end }}
+	ElderItem {{ .ElderItem }}{{- end }}
 	{{- if .ShaperItem }}
-	ShaperItem true{{- end }}
+	ShaperItem {{ .ShaperItem }}{{- end }}
 	{{- if .HasInfluence }}
 	HasInfluence "{{ .HasInfluence }}"{{- end}}
 	{{- if .BaseArmour }}

@@ -17,6 +17,8 @@ type Filter struct {
 	Chromatic bool
 
 	Evasion visibility
+
+	Chance BaseTypes
 }
 
 func (f Filter) virtualSections() []section {
@@ -30,7 +32,7 @@ func (f Filter) virtualSections() []section {
 					SocketGroup: "RGB",
 					Height:      3,
 					Width:       1,
-					BorderColor: "235 235 235 255",
+					BorderColor: ColorChrome,
 				},
 			},
 			section{
@@ -39,7 +41,7 @@ func (f Filter) virtualSections() []section {
 					SocketGroup: "RGB",
 					Height:      2,
 					Width:       2,
-					BorderColor: "235 235 235 255",
+					BorderColor: ColorChrome,
 				},
 			},
 		)
@@ -62,6 +64,20 @@ func (f Filter) virtualSections() []section {
 		)
 	}
 
+	if f.Chance != nil {
+		ss = append(ss,
+			section{
+				block: block{
+					Visibility:  Show,
+					BaseTypes:   f.Chance,
+					Rarity:      cmpEQ(string(RarityNormal)),
+					BorderColor: ColorChance,
+				},
+				NonInfluenced: true,
+			},
+		)
+	}
+
 	return ss
 }
 
@@ -76,28 +92,14 @@ func (f Filter) String() string {
 	return res
 }
 
-var defaultFilter = Filter{
-	sections: []section{
-		{
-			block: block{
-				Visibility: Show,
-				Continue:   true,
-				FontSize:   34,
-			},
-		},
-	},
-
-	Chromatic: true,
-
-	Evasion: Hide,
-}
-
-var Default = defaultFilter
-
 type section struct {
 	block
 
-	Gear bool
+	OneHanded bool
+	TwoHanded bool
+
+	Gear   bool
+	Shield bool
 
 	NonInfluenced bool
 
@@ -112,7 +114,7 @@ const (
 
 func (sec section) String() string {
 	if sec.Gear {
-		sec.Class = classes{"Helmet", "Body armour", "Gloves", "Boots"}
+		sec.Class = Classes{"Helmet", "Body armour", "Gloves", "Boots"}
 	}
 
 	if sec.NonInfluenced {
