@@ -1,7 +1,16 @@
 package filter
 
 // PresetGear contains all armour slots.
-var PresetGear = Classes{"Helmet", "Body armour", "Gloves", "Boots"}
+var PresetGear = Classes{"Helmets", "Body Armours", "Gloves", "Boots"}
 
 // PresetShield constais shield slot.
-var PresetShield = Classes{"Shield"}
+var PresetShield = Classes{"Shields"}
+
+// PresetMelee1H contains all one-handed melee weapons.
+var PresetMelee1H = Classes{"One Hand", "Claws", "Daggers"}
+
+// PresetMelee2H contains all two-handed melee weapons.
+var PresetMelee2H = Classes{"Two Hand", "Warstaves"}
+
+// PresetBow contains bows and quivers.
+var PresetBow = Classes{"Bows", "Quivers"}

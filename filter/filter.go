@@ -25,6 +25,7 @@ type Filter struct {
 	Chance BaseTypes
 
 	LevelingHideNon4L bool
+	LevelingHideNon3L bool
 }
 
 func (f Filter) virtualSections() []section {
@@ -81,6 +82,23 @@ func (f Filter) virtualSections() []section {
 
 					Rarity:        CmpLT(string(RarityUnique)),
 					LinkedSockets: CmpLT("4"),
+				},
+				Hide:          HideClickable,
+				NonInfluenced: true,
+			},
+		)
+	}
+
+	if f.LevelingHideNon3L {
+		ss = append(ss,
+			section{
+				block: block{
+					Visibility: Hide,
+
+					Class: append(PresetMelee1H, append(PresetMelee2H, append(PresetShield, PresetBow...)...)...),
+
+					Rarity:        CmpLT(string(RarityUnique)),
+					LinkedSockets: CmpLT("3"),
 				},
 				Hide:          HideClickable,
 				NonInfluenced: true,
