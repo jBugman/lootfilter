@@ -178,7 +178,7 @@ func initBlockTemplate() {
 	{{- if .Class }}
 	Class {{ .Class }}{{- end}}
 	{{- if .BaseTypes }}
-	BaseTypes {{ .BaseTypes }}{{- end}}
+	BaseType {{ .BaseTypes }}{{- end}}
 	{{- if .Rarity }}
 	Rarity {{ .Rarity }}{{- end }}
 	{{- if .ElderItem }}
