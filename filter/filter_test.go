@@ -11,11 +11,11 @@ import (
 func TestClassesString(t *testing.T) {
 	require.Equal(t,
 		"",
-		(classes(nil)).String(),
+		(Classes(nil)).String(),
 	)
 
 	require.Equal(t,
 		`"Helmets" "Amulet"`,
-		(classes{"Helmets", "Amulet"}).String(),
+		(Classes{"Helmets", "Amulet"}).String(),
 	)
 }
