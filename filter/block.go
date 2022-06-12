@@ -8,35 +8,51 @@ import (
 type visibility string
 
 const (
+	// Hide means block is about hiding loot.
 	Hide visibility = "Hide"
+	// Show means block is about displaying loot.
 	Show visibility = "Show"
 )
 
 type influence string
 
 const (
+	// InfluenceNone is for no-influence items.
 	InfluenceNone influence = "None"
 )
 
 type color string
 
 const (
+	// ColorZero is for invisibility.
 	ColorZero color = "0 0 0 0"
 
+	// ColorChrome is NeverSink's default color for the chromatic recipe.
 	ColorChrome color = "235 235 235 255"
+	// ColorChance is NeverSink's default color for chancing bases.
 	ColorChance color = "33 103 33 255"
 
+	// ColorBG is default background color.
 	ColorBG color = "51 51 51 255" // #333
 )
 
 type rarity string
 
 const (
+	// RarityNormal is for white items.
 	RarityNormal rarity = "Normal"
-	RarityMagic  rarity = "Magic"
-	RarityRare   rarity = "Rare"
+	// RarityMagic is for magic items.
+	RarityMagic rarity = "Magic"
+	// RarityRare is for rare items.
+	RarityRare rarity = "Rare"
+	// RarityUnique is for unique items.
 	RarityUnique rarity = "Unique"
 )
+
+// Comparison represents equality in a criterion, can be <, <=, ==, >= and >.
+type Comparison interface {
+	RenderComparison() string
+}
 
 type cmp struct {
 	OP    string
@@ -44,18 +60,15 @@ type cmp struct {
 }
 
 func (c cmp) String() string {
+	return c.RenderComparison()
+}
+
+func (c *cmp) RenderComparison() string {
 	return c.OP + " " + c.Value
 }
 
-func cmpEQ(x string) *cmp {
-	v := cmp{
-		OP:    "==",
-		Value: x,
-	}
-	return &v
-}
-
-func cmpLT(x string) *cmp {
+// CmpLT is a Comparison for <.
+func CmpLT(x string) Comparison {
 	v := cmp{
 		OP:    "<",
 		Value: x,
@@ -63,7 +76,35 @@ func cmpLT(x string) *cmp {
 	return &v
 }
 
-func cmpGT(x string) *cmp {
+// CmpLTE is a Comparison for <=.
+func CmpLTE(x string) Comparison {
+	v := cmp{
+		OP:    ">=",
+		Value: x,
+	}
+	return &v
+}
+
+// CmpEQ is a Comparison for ==.
+func CmpEQ(x string) Comparison {
+	v := cmp{
+		OP:    "==",
+		Value: x,
+	}
+	return &v
+}
+
+// CmpGTE is a Comparison for >=.
+func CmpGTE(x string) Comparison {
+	v := cmp{
+		OP:    ">=",
+		Value: x,
+	}
+	return &v
+}
+
+// CmpGT is a Comparison for >.
+func CmpGT(x string) Comparison {
 	v := cmp{
 		OP:    ">",
 		Value: x,
@@ -71,12 +112,7 @@ func cmpGT(x string) *cmp {
 	return &v
 }
 
-type class string
-
-func (c class) String() string {
-	return `"` + string(c) + `"`
-}
-
+// Classes is a list of item classes. See https://www.poewiki.net/wiki/Item_class.
 type Classes []string
 
 func (c Classes) String() string {
@@ -87,6 +123,7 @@ func (c Classes) String() string {
 	return strings.Join(cs, " ")
 }
 
+// BaseTypes is a list of item base types.
 type BaseTypes []string
 
 func (bt BaseTypes) String() string {
@@ -104,7 +141,7 @@ type block struct {
 	Class     Classes
 	BaseTypes BaseTypes
 
-	Rarity *cmp
+	Rarity Comparison
 
 	SocketGroup string
 
@@ -115,9 +152,9 @@ type block struct {
 	ShaperItem   *bool
 	HasInfluence influence
 
-	BaseArmour       *cmp
-	BaseEvasion      *cmp
-	BaseEnergyShield *cmp
+	BaseArmour       Comparison
+	BaseEvasion      Comparison
+	BaseEnergyShield Comparison
 
 	FontSize int
 

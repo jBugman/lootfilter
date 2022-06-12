@@ -6,11 +6,15 @@ import (
 
 var _t = true
 var _f = false
-var TRUE = &_t
-var FALSE = &_f
 
-const defaltFontSize = 34
+var (
+	// TRUE is boolean true.
+	TRUE = &_t
+	// FALSE is boolean false.
+	FALSE = &_f
+)
 
+// Filter represents high level filter config.
 type Filter struct {
 	sections []section
 
@@ -53,9 +57,9 @@ func (f Filter) virtualSections() []section {
 				block: block{
 					Visibility: Hide,
 
-					BaseEvasion:      cmpGT("0"),
-					BaseArmour:       cmpEQ("0"),
-					BaseEnergyShield: cmpEQ("0"),
+					BaseEvasion:      CmpGT("0"),
+					BaseArmour:       CmpEQ("0"),
+					BaseEnergyShield: CmpEQ("0"),
 				},
 				Gear:          true,
 				NonInfluenced: true,
@@ -70,7 +74,7 @@ func (f Filter) virtualSections() []section {
 				block: block{
 					Visibility:  Show,
 					BaseTypes:   f.Chance,
-					Rarity:      cmpEQ(string(RarityNormal)),
+					Rarity:      CmpEQ(string(RarityNormal)),
 					BorderColor: ColorChance,
 				},
 				NonInfluenced: true,
@@ -109,6 +113,7 @@ type section struct {
 type hideLevel string
 
 const (
+	// HideFully minimizes font and disables other decorations and sounds.
 	HideFully hideLevel = "fully"
 )
 
