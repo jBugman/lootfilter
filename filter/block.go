@@ -77,6 +77,7 @@ func (c classes) String() string {
 
 type block struct {
 	Visibility visibility
+	Continue   bool
 
 	Class classes
 
@@ -142,5 +143,7 @@ func initBlockTemplate() {
 	SetBackgroundColor {{ .BackgroundColor }}{{- end }}
 	{{- if .DisableDropSound }}
 	DisableDropSound true{{- end }}
+	{{- if .Continue }}
+	Continue{{- end }}
 `))
 }

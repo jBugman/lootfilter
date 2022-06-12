@@ -81,11 +81,15 @@ var defaultFilter = Filter{
 		{
 			block: block{
 				Visibility: Show,
+				Continue:   true,
 				FontSize:   34,
 			},
 		},
 	},
+
 	Chromatic: true,
+
+	Evasion: Hide,
 }
 
 var Default = defaultFilter

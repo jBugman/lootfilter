@@ -22,8 +22,6 @@ func main() {
 
 	custom := filter.Default
 
-	custom.Evasion = filter.Hide
-
 	if err := os.WriteFile(filterFile, []byte(custom.String()), 0o644); err != nil {
 		fatal(err)
 	}
