@@ -5,6 +5,9 @@ import (
 	"text/template"
 )
 
+const minFontSize = 18
+const clickableFontSize = 26
+
 type visibility string
 
 const (

@@ -147,8 +147,15 @@ func (sec section) String() string {
 		sec.HasInfluence = InfluenceNone
 	}
 
-	if sec.Hide == "fully" {
-		sec.FontSize = 18
+	switch sec.Hide {
+	case HideFully:
+		sec.FontSize = minFontSize
+		sec.BackgroundColor = ColorZero
+		sec.BorderColor = ColorZero
+		sec.DisableDropSound = true
+
+	case HideClickable:
+		sec.FontSize = clickableFontSize
 		sec.BackgroundColor = ColorZero
 		sec.BorderColor = ColorZero
 		sec.DisableDropSound = true
