@@ -9,6 +9,9 @@ var PresetShield = Classes{"Shields"}
 // PresetMelee1H contains all one-handed melee weapons.
 var PresetMelee1H = Classes{"One Hand", "Claws", "Daggers"}
 
+// PresetCaster contains all caster weapons.
+var PresetCaster = Classes{"Staves", "Rune Daggers", "Wands"}
+
 // PresetMelee2H contains all two-handed melee weapons.
 var PresetMelee2H = Classes{"Two Hand", "Warstaves"}
 

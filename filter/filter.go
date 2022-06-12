@@ -95,7 +95,12 @@ func (f Filter) virtualSections() []section {
 				block: block{
 					Visibility: Hide,
 
-					Class: append(PresetMelee1H, append(PresetMelee2H, append(PresetShield, PresetBow...)...)...),
+					Class: append(
+						PresetMelee1H, append(
+							PresetMelee2H, append(
+								PresetShield, append(
+									PresetCaster,
+									PresetBow...)...)...)...),
 
 					Rarity:        CmpLT(string(RarityUnique)),
 					LinkedSockets: CmpLT("3"),
