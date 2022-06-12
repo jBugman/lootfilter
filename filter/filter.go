@@ -2,8 +2,12 @@ package filter
 
 import (
 	"strings"
-	"text/template"
 )
+
+var _t = true
+var _f = false
+var TRUE = &_t
+var FALSE = &_f
 
 const defaltFontSize = 34
 
@@ -11,28 +15,53 @@ type Filter struct {
 	sections []section
 
 	Chromatic bool
+
+	Evasion visibility
 }
 
 func (f Filter) virtualSections() []section {
 	ss := f.sections
+
 	if f.Chromatic {
 		ss = append(ss,
 			section{
-				Visibility:  Show,
-				SocketGroup: "RGB",
-				Height:      3,
-				Width:       1,
-				BorderColor: "235 235 235 255",
+				block: block{
+					Visibility:  Show,
+					SocketGroup: "RGB",
+					Height:      3,
+					Width:       1,
+					BorderColor: "235 235 235 255",
+				},
 			},
 			section{
-				Visibility:  Show,
-				SocketGroup: "RGB",
-				Height:      2,
-				Width:       2,
-				BorderColor: "235 235 235 255",
+				block: block{
+					Visibility:  Show,
+					SocketGroup: "RGB",
+					Height:      2,
+					Width:       2,
+					BorderColor: "235 235 235 255",
+				},
 			},
 		)
 	}
+
+	if f.Evasion == Hide {
+		ss = append(ss,
+			section{
+				block: block{
+					Visibility: Hide,
+
+					BaseEvasion:      cmpGT("0"),
+					BaseArmour:       cmpEQ("0"),
+					BaseEnergyShield: cmpEQ("0"),
+				},
+				Gear:          true,
+				NonInfluenced: true,
+				Hide:          HideFully,
+			},
+		)
+	}
+
 	return ss
 }
 
@@ -50,8 +79,10 @@ func (f Filter) String() string {
 var defaultFilter = Filter{
 	sections: []section{
 		{
-			Visibility: Show,
-			FontSize:   34,
+			block: block{
+				Visibility: Show,
+				FontSize:   34,
+			},
 		},
 	},
 	Chromatic: true,
@@ -59,42 +90,43 @@ var defaultFilter = Filter{
 
 var Default = defaultFilter
 
-type visibility string
-
-const Hide visibility = "Hide"
-const Show visibility = "Show"
-
 type section struct {
-	Visibility visibility
+	block
 
-	SocketGroup string
+	Gear bool
 
-	Height int
-	Width  int
+	NonInfluenced bool
 
-	FontSize    int
-	BorderColor string
+	Hide hideLevel
 }
+
+type hideLevel string
+
+const (
+	HideFully hideLevel = "fully"
+)
 
 func (sec section) String() string {
-	var buf strings.Builder
-	sectionTemplate.Execute(&buf, sec)
-	return buf.String()
+	if sec.Gear {
+		sec.Class = classes{"Helmet", "Body armour", "Gloves", "Boots"}
+	}
+
+	if sec.NonInfluenced {
+		sec.ElderItem = FALSE
+		sec.ShaperItem = FALSE
+		sec.HasInfluence = InfluenceNone
+	}
+
+	if sec.Hide == "fully" {
+		sec.FontSize = 18
+		sec.BackgroundColor = ColorZero
+		sec.BorderColor = ColorZero
+		sec.DisableDropSound = true
+	}
+
+	return sec.block.String()
 }
 
-var sectionTemplate template.Template
-
 func init() {
-	sectionTemplate = *template.Must(template.New("section").Parse(`{{ .Visibility }}
-	{{- if .SocketGroup }}
-	SocketGroup "{{ .SocketGroup }}"{{- end }}
-	{{- if .Height }}
-	Height <= {{ .Height }}{{- end }}
-	{{- if .Width }}
-	Width <= {{ .Width }}{{- end }}
-	{{- if .FontSize }}
-	SetFontSize {{ .FontSize }}{{- end }}
-	{{- if .BorderColor }}
-	SetBorderColor {{ .BorderColor }}{{- end }}
-`))
+	initBlockTemplate()
 }
