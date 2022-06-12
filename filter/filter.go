@@ -23,6 +23,8 @@ type Filter struct {
 	Evasion visibility
 
 	Chance BaseTypes
+
+	Leveling4L bool
 }
 
 func (f Filter) virtualSections() []section {
@@ -64,6 +66,21 @@ func (f Filter) virtualSections() []section {
 				Gear:          true,
 				NonInfluenced: true,
 				Hide:          HideFully,
+			},
+		)
+	}
+
+	if f.Leveling4L {
+		ss = append(ss,
+			section{
+				block: block{
+					Visibility:    Hide,
+					Rarity:        CmpLT(string(RarityUnique)),
+					LinkedSockets: CmpLT("4"),
+				},
+				Hide:          HideClickable,
+				Gear:          true,
+				NonInfluenced: true,
 			},
 		)
 	}
@@ -113,8 +130,10 @@ type section struct {
 type hideLevel string
 
 const (
-	// HideFully minimizes font and disables other decorations and sounds.
+	// HideFully hides item, minimizes font and disables other decorations and sounds.
 	HideFully hideLevel = "fully"
+	// HideClickable hides item, makes font smaller and disables other decorations and sounds.
+	HideClickable hideLevel = "clickable"
 )
 
 func (sec section) String() string {

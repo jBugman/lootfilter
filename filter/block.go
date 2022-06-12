@@ -143,7 +143,9 @@ type block struct {
 
 	Rarity Comparison
 
-	SocketGroup string
+	SocketGroup   string
+	Sockets       Comparison
+	LinkedSockets Comparison
 
 	Height int
 	Width  int
@@ -195,6 +197,10 @@ func initBlockTemplate() {
 	BaseEnergyShield {{ .BaseEnergyShield }}{{- end }}
 	{{- if .SocketGroup }}
 	SocketGroup "{{ .SocketGroup }}"{{- end }}
+	{{- if .Sockets }}
+	Sockets {{ .Sockets }}{{- end }}
+	{{- if .LinkedSockets }}
+	LinkedSockets {{ .LinkedSockets }}{{- end }}
 	{{- if .Height }}
 	Height <= {{ .Height }}{{- end }}
 	{{- if .Width }}
