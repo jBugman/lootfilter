@@ -62,6 +62,8 @@ func (f Filter) virtualSections() []section {
 
 					Class: append(PresetGear, PresetShield...),
 
+					Rarity: CmpLT(string(RarityUnique)),
+
 					BaseEvasion:      CmpGT("0"),
 					BaseArmour:       CmpEQ("0"),
 					BaseEnergyShield: CmpEQ("0"),
@@ -80,7 +82,8 @@ func (f Filter) virtualSections() []section {
 
 					Class: PresetGear,
 
-					Rarity:        CmpLT(string(RarityUnique)),
+					Rarity: CmpLT(string(RarityUnique)),
+
 					LinkedSockets: CmpLT("4"),
 				},
 				Hide:          HideClickable,
@@ -102,7 +105,8 @@ func (f Filter) virtualSections() []section {
 									PresetCaster,
 									PresetBow...)...)...)...),
 
-					Rarity:        CmpLT(string(RarityUnique)),
+					Rarity: CmpLT(string(RarityUnique)),
+
 					LinkedSockets: CmpLT("3"),
 				},
 				Hide:          HideClickable,
