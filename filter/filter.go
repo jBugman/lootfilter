@@ -89,6 +89,8 @@ func (f Filter) virtualSections() []section {
 					Rarity: CmpLT(string(RarityUnique)),
 
 					LinkedSockets: CmpLT("4"),
+
+					DropLevel: CmpLT("40"),
 				},
 				Hide:          HideClickable,
 				NonInfluenced: true,
@@ -112,6 +114,8 @@ func (f Filter) virtualSections() []section {
 					Rarity: CmpLT(string(RarityUnique)),
 
 					LinkedSockets: CmpLT("3"),
+
+					DropLevel: CmpLT("40"),
 				},
 				Hide:          HideClickable,
 				NonInfluenced: true,
@@ -139,6 +143,19 @@ func (f Filter) virtualSections() []section {
 			Sockets:     CmpEQ("6"),
 			BorderColor: Color6S,
 		},
+	})
+
+	ss = append(ss, section{
+		block: block{
+			Visibility: Hide,
+			Class:      Classes{"Flask"},
+
+			AreaLevel: CmpGTE("50"),
+			ItemLevel: CmpLTE("74"),
+
+			Quality: CmpLT("7"),
+		},
+		Hide: HideFully,
 	})
 
 	ss = append(ss, section{

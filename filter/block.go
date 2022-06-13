@@ -87,7 +87,7 @@ func CmpLT(x string) Comparison {
 // CmpLTE is a Comparison for <=.
 func CmpLTE(x string) Comparison {
 	v := cmp{
-		OP:    ">=",
+		OP:    "<=",
 		Value: x,
 	}
 	return &v
@@ -97,6 +97,15 @@ func CmpLTE(x string) Comparison {
 func CmpEQ(x string) Comparison {
 	v := cmp{
 		OP:    "==",
+		Value: x,
+	}
+	return &v
+}
+
+// CmpNEQ is a Comparison for !.
+func CmpNEQ(x string) Comparison {
+	v := cmp{
+		OP:    "!",
 		Value: x,
 	}
 	return &v
@@ -151,9 +160,15 @@ type block struct {
 
 	Rarity Comparison
 
+	Quality Comparison
+
 	SocketGroup   string
 	Sockets       Comparison
 	LinkedSockets Comparison
+
+	ItemLevel Comparison
+	DropLevel Comparison
+	AreaLevel Comparison
 
 	Height int
 	Width  int
@@ -191,6 +206,14 @@ func initBlockTemplate() {
 	BaseType {{ .BaseTypes }}{{- end}}
 	{{- if .Rarity }}
 	Rarity {{ .Rarity }}{{- end }}
+	{{- if .Quality }}
+	Quality {{ .Quality }}{{- end }}
+	{{- if .ItemLevel }}
+	ItemLevel {{ .ItemLevel }}{{- end }}
+	{{- if .DropLevel }}
+	DropLevel {{ .DropLevel }}{{- end }}
+	{{- if .AreaLevel }}
+	AreaLevel {{ .AreaLevel }}{{- end }}
 	{{- if .ElderItem }}
 	ElderItem {{ .ElderItem }}{{- end }}
 	{{- if .ShaperItem }}
