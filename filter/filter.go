@@ -54,6 +54,85 @@ func (f Filter) virtualSections() []section {
 		)
 	}
 
+	ss = append(ss,
+		section{
+			block: block{
+				Visibility: Hide,
+
+				Class: append(PresetGear, PresetShield...),
+
+				Rarity: CmpLT(string(RarityUnique)),
+
+				Sockets: CmpLT("6"),
+
+				DropLevel: CmpLT("58"),
+			},
+
+			Hide: HideFully,
+
+			NonInfluenced: true,
+		},
+	)
+
+	ss = append(ss,
+		section{
+			block: block{
+				Visibility: Hide,
+
+				Class: PresetGear,
+
+				Rarity: CmpLT(string(RarityRare)),
+
+				LinkedSockets: CmpLT("4"),
+				Sockets:       CmpLT("6"),
+
+				ItemLevel: CmpGT("45"),
+			},
+
+			Hide: HideFully,
+
+			NonInfluenced: true,
+		},
+	)
+
+	ss = append(ss,
+		section{
+			block: block{
+				Visibility: Hide,
+
+				Class: PresetCaster,
+
+				Rarity: CmpLT(string(RarityUnique)),
+
+				Sockets: CmpLT("6"),
+
+				DropLevel: CmpLT("58"),
+			},
+
+			Hide: HideFully,
+
+			NonInfluenced: true,
+		},
+	)
+
+	ss = append(ss,
+		section{
+			block: block{
+				Visibility: Hide,
+
+				Class: append(PresetBow, append(PresetMelee1H, PresetMelee2H...)...),
+
+				Rarity: CmpLT(string(RarityUnique)),
+
+				Sockets: CmpLT("6"),
+			},
+
+			Hide: HideFully,
+
+			NonInfluenced: true,
+		},
+	)
+
 	if f.Evasion == Hide {
 		ss = append(ss,
 			section{
