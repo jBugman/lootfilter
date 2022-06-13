@@ -160,6 +160,34 @@ func (f Filter) virtualSections() []section {
 
 	ss = append(ss, section{
 		block: block{
+			Visibility: Hide,
+			Class:      Classes{"Gem"},
+			BaseTypes:  append(BaseTypes{"!"}, PresetGoodGems...),
+
+			AlternateQuality: FALSE,
+
+			Quality:  CmpLT("7"),
+			GemLevel: CmpLT("18"),
+		},
+		Hide: HideFully,
+	})
+
+	ss = append(ss, section{
+		block: block{
+			Visibility: Show,
+			Class:      Classes{"Gem"},
+			BaseTypes:  PresetGoodGems,
+
+			FontSize: defaltFontSize + 4,
+
+			TextColor:       ColorGem,
+			BorderColor:     ColorGem,
+			BackgroundColor: ColorBG,
+		},
+	})
+
+	ss = append(ss, section{
+		block: block{
 			Visibility: Show,
 			Class:      Classes{"Currency"},
 

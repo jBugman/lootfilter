@@ -32,6 +32,8 @@ const (
 
 	// ColorCurrency is PoE native color for currency.
 	ColorCurrency color = "170 158 130 255"
+	// ColorGem is PoE native color for currency.
+	ColorGem color = "27 162 155 255"
 
 	// ColorChrome is NeverSink's default color for the chromatic recipe.
 	ColorChrome color = "235 235 235 255"
@@ -132,21 +134,25 @@ func CmpGT(x string) Comparison {
 // Classes is a list of item classes. See https://www.poewiki.net/wiki/Item_class.
 type Classes []string
 
-func (c Classes) String() string {
-	cs := make([]string, len(c))
-	for i := range c {
-		cs[i] = `"` + c[i] + `"`
-	}
-	return strings.Join(cs, " ")
+func (cs Classes) String() string {
+	return renderStrings([]string(cs))
 }
 
 // BaseTypes is a list of item base types.
 type BaseTypes []string
 
 func (bt BaseTypes) String() string {
-	cs := make([]string, len(bt))
-	for i := range bt {
-		cs[i] = `"` + bt[i] + `"`
+	return renderStrings([]string(bt))
+}
+
+func renderStrings(xs []string) string {
+	cs := make([]string, len(xs))
+	for i := range xs {
+		if i == 0 && strings.ContainsAny(xs[i], "<=>!") {
+			cs[i] = xs[i]
+		} else {
+			cs[i] = `"` + xs[i] + `"`
+		}
 	}
 	return strings.Join(cs, " ")
 }
@@ -162,6 +168,8 @@ type block struct {
 
 	Quality Comparison
 
+	AlternateQuality *bool
+
 	SocketGroup   string
 	Sockets       Comparison
 	LinkedSockets Comparison
@@ -176,6 +184,8 @@ type block struct {
 	ElderItem    *bool
 	ShaperItem   *bool
 	HasInfluence influence
+
+	GemLevel Comparison
 
 	BaseArmour       Comparison
 	BaseEvasion      Comparison
@@ -208,6 +218,8 @@ func initBlockTemplate() {
 	Rarity {{ .Rarity }}{{- end }}
 	{{- if .Quality }}
 	Quality {{ .Quality }}{{- end }}
+	{{- if .AlternateQuality }}
+	AlternateQuality {{ .AlternateQuality }}{{- end }}
 	{{- if .ItemLevel }}
 	ItemLevel {{ .ItemLevel }}{{- end }}
 	{{- if .DropLevel }}
@@ -216,6 +228,8 @@ func initBlockTemplate() {
 	AreaLevel {{ .AreaLevel }}{{- end }}
 	{{- if .ElderItem }}
 	ElderItem {{ .ElderItem }}{{- end }}
+	{{- if .GemLevel }}
+	GemLevel {{ .GemLevel }}{{- end }}
 	{{- if .ShaperItem }}
 	ShaperItem {{ .ShaperItem }}{{- end }}
 	{{- if .HasInfluence }}
