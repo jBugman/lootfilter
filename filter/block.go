@@ -148,11 +148,7 @@ func (bt BaseTypes) String() string {
 func renderStrings(xs []string) string {
 	cs := make([]string, len(xs))
 	for i := range xs {
-		if i == 0 && strings.ContainsAny(xs[i], "<=>!") {
-			cs[i] = xs[i]
-		} else {
-			cs[i] = `"` + xs[i] + `"`
-		}
+		cs[i] = `"` + xs[i] + `"`
 	}
 	return strings.Join(cs, " ")
 }

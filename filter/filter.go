@@ -162,12 +162,13 @@ func (f Filter) virtualSections() []section {
 		block: block{
 			Visibility: Hide,
 			Class:      Classes{"Gem"},
-			BaseTypes:  append(BaseTypes{"!"}, PresetGoodGems...),
 
 			AlternateQuality: FALSE,
 
 			Quality:  CmpLT("7"),
 			GemLevel: CmpLT("18"),
+
+			Continue: true,
 		},
 		Hide: HideFully,
 	})

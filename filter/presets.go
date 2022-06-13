@@ -19,4 +19,4 @@ var PresetMelee2H = Classes{"Two Hand", "Warstaves"}
 var PresetBow = Classes{"Bows", "Quivers"}
 
 // PresetGoodGems contains gem bases you always want to see.
-var PresetGoodGems = BaseTypes{"Empower", "Enlighten", "Enchance", "Portal"}
+var PresetGoodGems = BaseTypes{"Empower", "Enlighten", "Enhance", "Portal"}
