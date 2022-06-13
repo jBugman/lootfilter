@@ -64,12 +64,16 @@ func (f Filter) virtualSections() []section {
 
 					Rarity: CmpLT(string(RarityUnique)),
 
+					Sockets: CmpLT("6"),
+
 					BaseEvasion:      CmpGT("0"),
 					BaseArmour:       CmpEQ("0"),
 					BaseEnergyShield: CmpEQ("0"),
 				},
+
+				Hide: HideFully,
+
 				NonInfluenced: true,
-				Hide:          HideFully,
 			},
 		)
 	}
@@ -128,6 +132,25 @@ func (f Filter) virtualSections() []section {
 			},
 		)
 	}
+
+	ss = append(ss, section{
+		block: block{
+			Visibility:  Show,
+			Sockets:     CmpEQ("6"),
+			BorderColor: Color6S,
+		},
+	})
+
+	ss = append(ss, section{
+		block: block{
+			Visibility: Show,
+			Class:      Classes{"Currency"},
+
+			FontSize:    defaltFontSize + 2,
+			TextColor:   ColorCurrency,
+			BorderColor: ColorCurrency,
+		},
+	})
 
 	return ss
 }
