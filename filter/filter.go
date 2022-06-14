@@ -133,6 +133,58 @@ func (f Filter) virtualSections() []section {
 		},
 	)
 
+	ss = append(ss,
+		section{
+			block: block{
+				Visibility: Hide,
+
+				BaseTypes: append(PresetBadBelts, PresetBadJewelry...),
+
+				Rarity: CmpLT(string(RarityUnique)),
+			},
+
+			Hide: HideClickable,
+
+			NonInfluenced: true,
+		},
+	)
+
+	ss = append(ss,
+		section{
+			block: block{
+				Visibility: Hide,
+
+				BaseTypes: BaseTypes{"Diamond Ring"},
+
+				ItemLevel: CmpLT("82"),
+
+				Rarity: CmpLT(string(RarityUnique)),
+			},
+
+			Hide: HideClickable,
+
+			NonInfluenced: true,
+		},
+	)
+
+	ss = append(ss,
+		section{
+			block: block{
+				Visibility: Hide,
+
+				Class: PresetCaster,
+
+				ItemLevel: CmpLT("82"),
+
+				Rarity: CmpLT(string(RarityUnique)),
+			},
+
+			Hide: HideClickable,
+
+			NonInfluenced: true,
+		},
+	)
+
 	if f.Evasion == Hide {
 		ss = append(ss,
 			section{
@@ -218,9 +270,13 @@ func (f Filter) virtualSections() []section {
 
 	ss = append(ss, section{
 		block: block{
-			Visibility:  Show,
-			Sockets:     CmpEQ("6"),
-			BorderColor: Color6S,
+			Visibility: Show,
+			Sockets:    CmpEQ("6"),
+
+			BorderColor:     Color6S,
+			BackgroundColor: ColorBG,
+
+			FontSize: defaltFontSize + 3,
 		},
 	})
 
@@ -271,7 +327,7 @@ func (f Filter) virtualSections() []section {
 			Visibility: Show,
 			Class:      Classes{"Currency"},
 
-			FontSize:    defaltFontSize + 2,
+			FontSize:    defaltFontSize + 3,
 			TextColor:   ColorCurrency,
 			BorderColor: ColorCurrency,
 		},
