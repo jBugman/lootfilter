@@ -37,8 +37,8 @@ func (f Filter) virtualSections() []section {
 				block: block{
 					Visibility:  Show,
 					SocketGroup: "RGB",
-					Height:      3,
-					Width:       1,
+					Height:      CmpLTE("3"),
+					Width:       CmpEQ("1"),
 					BorderColor: ColorChrome,
 				},
 			},
@@ -46,8 +46,8 @@ func (f Filter) virtualSections() []section {
 				block: block{
 					Visibility:  Show,
 					SocketGroup: "RGB",
-					Height:      2,
-					Width:       2,
+					Height:      CmpEQ("2"),
+					Width:       CmpEQ("2"),
 					BorderColor: ColorChrome,
 				},
 			},
@@ -331,6 +331,24 @@ func (f Filter) virtualSections() []section {
 			TextColor:   ColorCurrency,
 			BorderColor: ColorCurrency,
 		},
+	})
+
+	ss = append(ss, section{
+		block: block{
+			Visibility: Hide,
+			BaseTypes:  BaseTypes{"Scroll of Wisdom", "Portal Scroll"},
+			AreaLevel:  CmpGT("55"),
+
+			StackSize: CmpLT("5"),
+		},
+	})
+
+	ss = append(ss, section{
+		block: block{
+			Visibility: Hide,
+			BaseTypes:  BaseTypes{"Engineer's Shard", "Transmutation Shard"},
+		},
+		Hide: HideFully,
 	})
 
 	return ss

@@ -174,14 +174,16 @@ type block struct {
 	DropLevel Comparison
 	AreaLevel Comparison
 
-	Height int
-	Width  int
+	Height Comparison
+	Width  Comparison
 
 	ElderItem    *bool
 	ShaperItem   *bool
 	HasInfluence influence
 
 	GemLevel Comparison
+
+	StackSize Comparison
 
 	BaseArmour       Comparison
 	BaseEvasion      Comparison
@@ -243,9 +245,11 @@ func initBlockTemplate() {
 	{{- if .LinkedSockets }}
 	LinkedSockets {{ .LinkedSockets }}{{- end }}
 	{{- if .Height }}
-	Height <= {{ .Height }}{{- end }}
+	Height {{ .Height }}{{- end }}
 	{{- if .Width }}
-	Width <= {{ .Width }}{{- end }}
+	Width {{ .Width }}{{- end }}
+	{{- if .StackSize }}
+	StackSize {{ .StackSize }}{{- end }}
 	{{- if .FontSize }}
 	SetFontSize {{ .FontSize }}{{- end }}
 	{{- if .TextColor }}
