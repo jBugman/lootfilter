@@ -39,6 +39,8 @@ func (f Filter) virtualSections() []section {
 					SocketGroup: "RGB",
 					Height:      CmpLTE("3"),
 					Width:       CmpEQ("1"),
+
+					TextColor:   ColorChrome,
 					BorderColor: ColorChrome,
 				},
 			},
@@ -48,6 +50,8 @@ func (f Filter) virtualSections() []section {
 					SocketGroup: "RGB",
 					Height:      CmpEQ("2"),
 					Width:       CmpEQ("2"),
+
+					TextColor:   ColorChrome,
 					BorderColor: ColorChrome,
 				},
 			},
@@ -154,7 +158,25 @@ func (f Filter) virtualSections() []section {
 			block: block{
 				Visibility: Hide,
 
-				BaseTypes: BaseTypes{"Diamond Ring"},
+				Class: Classes{"Shield", "Wand"},
+
+				ItemLevel: CmpLT("82"),
+
+				Rarity: CmpLT(string(RarityUnique)),
+			},
+
+			Hide: HideClickable,
+
+			NonInfluenced: true,
+		},
+	)
+
+	ss = append(ss,
+		section{
+			block: block{
+				Visibility: Hide,
+
+				BaseTypes: BaseTypes{"Diamond Ring", "Amethyst Ring", "Unset Ring", "Moonstone Ring"},
 
 				ItemLevel: CmpLT("82"),
 
@@ -273,6 +295,7 @@ func (f Filter) virtualSections() []section {
 			Visibility: Show,
 			Sockets:    CmpEQ("6"),
 
+			TextColor:       Color6S,
 			BorderColor:     Color6S,
 			BackgroundColor: ColorBG,
 
@@ -325,9 +348,35 @@ func (f Filter) virtualSections() []section {
 	ss = append(ss, section{
 		block: block{
 			Visibility: Show,
+			Class:      Classes{"Fragment"},
+
+			FontSize: defaltFontSize + 3,
+
+			TextColor:   ColorFragment,
+			BorderColor: ColorFragment,
+		},
+	})
+
+	ss = append(ss, section{
+		block: block{
+			Visibility: Show,
+			Class:      Classes{"Map"},
+
+			FontSize: defaltFontSize + 1,
+
+			TextColor:       ColorMaps,
+			BorderColor:     ColorMaps,
+			BackgroundColor: ColorBG,
+		},
+	})
+
+	ss = append(ss, section{
+		block: block{
+			Visibility: Show,
 			Class:      Classes{"Currency"},
 
-			FontSize:    defaltFontSize + 3,
+			FontSize: defaltFontSize + 3,
+
 			TextColor:   ColorCurrency,
 			BorderColor: ColorCurrency,
 		},

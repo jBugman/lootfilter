@@ -7,6 +7,7 @@ import (
 
 const minFontSize = 18
 const clickableFontSize = 26
+const defaltFontSize = 35
 
 type visibility string
 
@@ -34,6 +35,12 @@ const (
 	ColorCurrency color = "170 158 130 255"
 	// ColorGem is PoE native color for currency.
 	ColorGem color = "27 162 155 255"
+
+	// ColorFragment is color for fragments.
+	ColorFragment color = "140 0 0 255"
+
+	// ColorMaps is nice color for maps inspired by NeverSink.
+	ColorMaps color = "230 204 128 255"
 
 	// ColorChrome is NeverSink's default color for the chromatic recipe.
 	ColorChrome color = "235 235 235 255"

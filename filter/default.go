@@ -2,8 +2,6 @@ package filter
 
 // spellchecker:words Ezomyte
 
-const defaltFontSize = 34
-
 var defaultFilter = Filter{
 	sections: []section{
 		{
