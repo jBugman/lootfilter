@@ -42,6 +42,19 @@ func (filter Filter) applyRules() []section {
 		},
 	})
 
+	// Veiled Items
+	ss = append(ss, section{
+		block: block{
+			Visibility: Show,
+
+			Rarity:         cmp{EQ, RarityRare},
+			Identified:     TRUE,
+			HasExplicitMod: `"Veil"`,
+
+			FontSize: defaultFontSize,
+		},
+	})
+
 	// Chancing bases
 	if filter.Chance != nil {
 		ss = append(ss,
@@ -402,9 +415,9 @@ const (
 
 func (sec section) String() string {
 	if sec.NonInfluenced {
-		sec.ElderItem = FALSE
-		sec.ShaperItem = FALSE
-		sec.HasInfluence = InfluenceNone
+		sec.Elder = FALSE
+		sec.Shaper = FALSE
+		sec.Influence = InfluenceNone
 	}
 
 	switch sec.Hide {

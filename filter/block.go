@@ -78,7 +78,8 @@ func renderStrings(xs []string) string {
 
 type block struct {
 	Visibility visibility
-	Continue   bool
+
+	Identified *bool
 
 	Class     Classes
 	BaseTypes BaseTypes
@@ -100,9 +101,12 @@ type block struct {
 	Height Comparison
 	Width  Comparison
 
-	ElderItem    *bool
-	ShaperItem   *bool
-	HasInfluence influence
+	Elder     *bool
+	Shaper    *bool
+	Influence influence
+
+	Fractured   *bool
+	Synthesised *bool
 
 	GemLevel Comparison
 
@@ -112,6 +116,8 @@ type block struct {
 	BaseEvasion      Comparison
 	BaseEnergyShield Comparison
 
+	HasExplicitMod string
+
 	FontSize int
 
 	TextColor       color
@@ -119,6 +125,8 @@ type block struct {
 	BackgroundColor color
 
 	DisableDropSound bool
+
+	Continue bool
 }
 
 func (b block) String() string {
@@ -131,10 +139,12 @@ var blockTemplate template.Template
 
 func initBlockTemplate() {
 	blockTemplate = *template.Must(template.New("section").Parse(`{{ .Visibility }}
+	{{- if .Identified }}
+	Identified {{ .Identified }}{{- end }}
 	{{- if .Class }}
-	Class {{ .Class }}{{- end}}
+	Class {{ .Class }}{{- end }}
 	{{- if .BaseTypes }}
-	BaseType {{ .BaseTypes }}{{- end}}
+	BaseType {{ .BaseTypes }}{{- end }}
 	{{- if .Rarity }}
 	Rarity {{ .Rarity }}{{- end }}
 	{{- if .Quality }}
@@ -147,14 +157,19 @@ func initBlockTemplate() {
 	DropLevel {{ .DropLevel }}{{- end }}
 	{{- if .AreaLevel }}
 	AreaLevel {{ .AreaLevel }}{{- end }}
-	{{- if .ElderItem }}
-	ElderItem {{ .ElderItem }}{{- end }}
 	{{- if .GemLevel }}
 	GemLevel {{ .GemLevel }}{{- end }}
-	{{- if .ShaperItem }}
-	ShaperItem {{ .ShaperItem }}{{- end }}
-	{{- if .HasInfluence }}
-	HasInfluence "{{ .HasInfluence }}"{{- end}}
+
+	{{- if .Elder }}
+	ElderItem {{ .Elder }}{{- end }}
+	{{- if .Shaper }}
+	ShaperItem {{ .Shaper }}{{- end }}
+	{{- if .Influence }}
+	HasInfluence "{{ .Influence }}"{{- end}}
+	{{- if .Fractured }}
+	FracturedItem {{ .Fractured }}{{- end }}
+	{{- if .Synthesised }}
+	SynthesisedItem {{ .Synthesised }}{{- end }}
 	{{- if .BaseArmour }}
 	BaseArmour {{ .BaseArmour }}{{- end }}
 	{{- if .BaseEvasion }}
@@ -171,6 +186,8 @@ func initBlockTemplate() {
 	Height {{ .Height }}{{- end }}
 	{{- if .Width }}
 	Width {{ .Width }}{{- end }}
+	{{- if .HasExplicitMod }}
+	HasExplicitMod {{ .HasExplicitMod }}{{- end }}
 	{{- if .StackSize }}
 	StackSize {{ .StackSize }}{{- end }}
 	{{- if .FontSize }}

@@ -2,7 +2,7 @@ package filter
 
 const minFontSize = 18
 const clickableFontSize = 26
-const defaultFontSize = 35
+const defaultFontSize = 33
 
 type visibility string
 
