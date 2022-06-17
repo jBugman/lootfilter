@@ -33,7 +33,7 @@ func (filter Filter) applyRules() []section {
 		block: block{
 			Visibility: Show,
 
-			Sockets: cmp{LT, I(6)},
+			Sockets: cmp{EQ, I(6)},
 
 			FontSize:        defaultFontSize + 2,
 			TextColor:       Color6S,
@@ -88,6 +88,53 @@ func (filter Filter) applyRules() []section {
 		)
 	}
 
+	// Leveling
+	ss = append(ss,
+		section{
+			block: block{
+				Visibility: Hide,
+
+				Class:         PresetGear,
+				Rarity:        cmp{LT, RarityUnique},
+				LinkedSockets: cmp{LT, I(4)},
+				DropLevel:     cmp{LT, I(40)},
+			},
+			Hide:          HideClickable,
+			NonInfluenced: true,
+		},
+	)
+	ss = append(ss,
+		section{
+			block: block{
+				Visibility: Hide,
+
+				Class:         PresetMelee1H.And(PresetMelee2H).And(PresetShield).And(PresetCaster).And(PresetBow),
+				Rarity:        cmp{LT, RarityUnique},
+				LinkedSockets: cmp{LT, I(3)},
+				DropLevel:     cmp{LT, I(40)},
+			},
+			Hide:          HideClickable,
+			NonInfluenced: true,
+		},
+	)
+	ss = append(ss,
+		section{
+			block: block{
+				Visibility: Hide,
+
+				Class:         PresetGear,
+				Rarity:        cmp{LT, RarityRare},
+				LinkedSockets: cmp{LT, I(4)},
+				Sockets:       cmp{LT, I(6)},
+				ItemLevel:     cmp{LT, I(45)},
+			},
+
+			Hide: HideFully,
+
+			NonInfluenced: true,
+		},
+	)
+
 	ss = append(ss,
 		section{
 			block: block{
@@ -110,14 +157,26 @@ func (filter Filter) applyRules() []section {
 			block: block{
 				Visibility: Hide,
 
-				Class:         PresetGear,
-				Rarity:        cmp{LT, RarityRare},
-				LinkedSockets: cmp{LT, I(4)},
-				Sockets:       cmp{LT, I(6)},
-				ItemLevel:     cmp{LT, I(45)},
+				Class:   PresetGear.And(PresetShield).And(PresetCaster),
+				Rarity:  cmp{LT, RarityRare},
+				Sockets: cmp{LT, I(6)},
 			},
 
-			Hide: HideFully,
+			Hide: HideClickable,
+
+			NonInfluenced: true,
+		},
+	)
+	ss = append(ss,
+		section{
+			block: block{
+				Visibility: Hide,
+
+				Class:  Classes{"Belt", "Amulet", "Ring"},
+				Rarity: cmp{LT, RarityRare},
+			},
+
+			Hide: HideClickable,
 
 			NonInfluenced: true,
 		},
@@ -145,22 +204,6 @@ func (filter Filter) applyRules() []section {
 				Visibility: Hide,
 
 				BaseTypes: PresetBadBelts.And(PresetBadJewelry),
-				Rarity:    cmp{LT, RarityUnique},
-			},
-
-			Hide: HideClickable,
-
-			NonInfluenced: true,
-		},
-	)
-
-	ss = append(ss,
-		section{
-			block: block{
-				Visibility: Hide,
-
-				Class:     Classes{"Shield", "Wand"},
-				ItemLevel: cmp{LT, I(82)},
 				Rarity:    cmp{LT, RarityUnique},
 			},
 
@@ -224,36 +267,6 @@ func (filter Filter) applyRules() []section {
 			},
 		)
 	}
-
-	ss = append(ss,
-		section{
-			block: block{
-				Visibility: Hide,
-
-				Class:         PresetGear,
-				Rarity:        cmp{LT, RarityUnique},
-				LinkedSockets: cmp{LT, I(4)},
-				DropLevel:     cmp{LT, I(40)},
-			},
-			Hide:          HideClickable,
-			NonInfluenced: true,
-		},
-	)
-
-	ss = append(ss,
-		section{
-			block: block{
-				Visibility: Hide,
-
-				Class:         PresetMelee1H.And(PresetMelee2H).And(PresetShield).And(PresetCaster).And(PresetBow),
-				Rarity:        cmp{LT, RarityUnique},
-				LinkedSockets: cmp{LT, I(3)},
-				DropLevel:     cmp{LT, I(40)},
-			},
-			Hide:          HideClickable,
-			NonInfluenced: true,
-		},
-	)
 
 	// Flasks
 	ss = append(ss, section{
