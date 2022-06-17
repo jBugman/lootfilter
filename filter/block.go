@@ -1,142 +1,50 @@
 package filter
 
 import (
+	"fmt"
 	"strings"
 	"text/template"
 )
 
-const minFontSize = 18
-const clickableFontSize = 26
-const defaltFontSize = 35
-
-type visibility string
-
-const (
-	// Hide means block is about hiding loot.
-	Hide visibility = "Hide"
-	// Show means block is about displaying loot.
-	Show visibility = "Show"
-)
-
-type influence string
-
-const (
-	// InfluenceNone is for no-influence items.
-	InfluenceNone influence = "None"
-)
-
-type color string
-
-const (
-	// ColorZero is for invisibility.
-	ColorZero color = "0 0 0 0"
-
-	// ColorCurrency is PoE native color for currency.
-	ColorCurrency color = "170 158 130 255"
-	// ColorGem is PoE native color for currency.
-	ColorGem color = "27 162 155 255"
-
-	// ColorFragment is color for fragments.
-	ColorFragment color = "140 0 0 255"
-
-	// ColorMaps is nice color for maps inspired by NeverSink.
-	ColorMaps color = "230 204 128 255"
-
-	// ColorChrome is NeverSink's default color for the chromatic recipe.
-	ColorChrome color = "235 235 235 255"
-	// ColorChance is NeverSink's default color for chancing bases.
-	ColorChance color = "33 103 33 255"
-	// Color6S is  NeverSink's default color for 6S bases.
-	Color6S color = "200 200 200 255"
-
-	// ColorBG is default background color.
-	ColorBG color = "51 51 51 255" // #333
-)
-
-type rarity string
-
-const (
-	// RarityNormal is for white items.
-	RarityNormal rarity = "Normal"
-	// RarityMagic is for magic items.
-	RarityMagic rarity = "Magic"
-	// RarityRare is for rare items.
-	RarityRare rarity = "Rare"
-	// RarityUnique is for unique items.
-	RarityUnique rarity = "Unique"
-)
-
-// Comparison represents equality in a criterion, can be <, <=, ==, >= and >.
+// Comparison represents equality in a criterion, can be <, <=, ==, !, >= and >.
 type Comparison interface {
-	RenderComparison() string
+	renderComparison() string
 }
 
+type operator string
+
+const (
+	LT  operator = "<"
+	LTE operator = "<="
+	EQ  operator = "=="
+	NEQ operator = "!"
+	GTE operator = ">="
+	GT  operator = ">"
+)
+
 type cmp struct {
-	OP    string
-	Value string
+	OP    operator
+	Value comparable
 }
 
 func (c cmp) String() string {
-	return c.RenderComparison()
+	return c.renderComparison()
 }
 
-func (c *cmp) RenderComparison() string {
-	return c.OP + " " + c.Value
+func (c cmp) renderComparison() string {
+	return fmt.Sprintf("%s %v", c.OP, c.Value)
 }
 
-// CmpLT is a Comparison for <.
-func CmpLT(x string) Comparison {
-	v := cmp{
-		OP:    "<",
-		Value: x,
-	}
-	return &v
+type comparable interface {
+	isComparable()
 }
 
-// CmpLTE is a Comparison for <=.
-func CmpLTE(x string) Comparison {
-	v := cmp{
-		OP:    "<=",
-		Value: x,
-	}
-	return &v
-}
+func (rarity) isComparable() {}
 
-// CmpEQ is a Comparison for ==.
-func CmpEQ(x string) Comparison {
-	v := cmp{
-		OP:    "==",
-		Value: x,
-	}
-	return &v
-}
+// I is for numeric constants in comparisons.
+type I uint
 
-// CmpNEQ is a Comparison for !.
-func CmpNEQ(x string) Comparison {
-	v := cmp{
-		OP:    "!",
-		Value: x,
-	}
-	return &v
-}
-
-// CmpGTE is a Comparison for >=.
-func CmpGTE(x string) Comparison {
-	v := cmp{
-		OP:    ">=",
-		Value: x,
-	}
-	return &v
-}
-
-// CmpGT is a Comparison for >.
-func CmpGT(x string) Comparison {
-	v := cmp{
-		OP:    ">",
-		Value: x,
-	}
-	return &v
-}
+func (I) isComparable() {}
 
 // Classes is a list of item classes. See https://www.poewiki.net/wiki/Item_class.
 type Classes []string
@@ -145,11 +53,19 @@ func (cs Classes) String() string {
 	return renderStrings([]string(cs))
 }
 
+func (cs Classes) And(xs Classes) Classes {
+	return append(cs, xs...)
+}
+
 // BaseTypes is a list of item base types.
 type BaseTypes []string
 
 func (bt BaseTypes) String() string {
 	return renderStrings([]string(bt))
+}
+
+func (bt BaseTypes) And(xs BaseTypes) BaseTypes {
+	return append(bt, xs...)
 }
 
 func renderStrings(xs []string) string {

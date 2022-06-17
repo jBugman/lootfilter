@@ -22,7 +22,7 @@ func main() {
 
 	custom := filter.Default
 
-	if err := os.WriteFile(filterFile, []byte(custom.String()), 0o644); err != nil {
+	if err := os.WriteFile(filterFile, []byte(filter.Render(custom)), 0o644); err != nil {
 		fatal(err)
 	}
 }
