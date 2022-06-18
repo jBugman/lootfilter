@@ -45,10 +45,10 @@ const (
 	ColorChance color = "33 103 33 255"
 	// Color6S is  NeverSink's default color for 6S bases.
 	Color6S color = "200 200 200 255"
-
-	// ColorBG is default background color.
-	ColorBG color = "51 51 51 255" // #333
 )
+
+// ColorBG is default background color.
+var ColorBG color = hex("#222")
 
 type rarity string
 

@@ -244,6 +244,22 @@ func (filter Filter) applyRules() []block {
 		BorderColor: ColorCurrency,
 	}))
 
+	// Sentinels
+	colorSentinel := hex("#1F54BF")
+	res = append(res, filter.Hide(block{
+		Class:     Classes{"Sentinel"},
+		BaseTypes: BaseTypes{"Emberstone", "Brimstone"},
+	}, cfg{
+		minimize: true,
+	}))
+	res = append(res, filter.Show(block{
+		Class: Classes{"Sentinel"},
+
+		TextColor:       colorSentinel,
+		BorderColor:     colorSentinel,
+		BackgroundColor: ColorBG,
+	}))
+
 	return res
 }
 
