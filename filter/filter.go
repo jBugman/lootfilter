@@ -88,8 +88,9 @@ func (filter Filter) applyRules() []block {
 	}
 	if filter.MinGearDropLvl > 0 {
 		res = append(res, filter.Hide(block{
-			Class:     PresetMelee1H.And(PresetMelee2H).And(PresetShield).And(PresetCaster).And(PresetBow),
-			DropLevel: cmp{LT, filter.MinGearDropLvl},
+			Class:      PresetGear.And(PresetShield).And(PresetMelee1H).And(PresetMelee2H).And(PresetCaster).And(PresetBow),
+			DropLevel:  cmp{LT, filter.MinGearDropLvl},
+			Identified: FALSE,
 		}, cfg{
 			presetGear: true,
 			minimize:   true,
@@ -123,9 +124,10 @@ func (filter Filter) applyRules() []block {
 	}))
 
 	res = append(res, filter.Hide(block{
-		Class:   PresetGear.And(PresetShield).And(PresetCaster),
-		Rarity:  cmp{LT, RarityRare},
-		Sockets: cmp{LT, I(6)},
+		Class:      PresetGear.And(PresetShield).And(PresetCaster),
+		Rarity:     cmp{LT, RarityRare},
+		Sockets:    cmp{LT, I(6)},
+		Identified: FALSE,
 	}, cfg{
 		presetGear: true,
 	}))
@@ -144,7 +146,8 @@ func (filter Filter) applyRules() []block {
 	}))
 
 	res = append(res, filter.Hide(block{
-		BaseTypes: PresetBadBelts.And(PresetBadJewelry),
+		BaseTypes:  PresetBadBelts.And(PresetBadJewelry),
+		Identified: FALSE,
 	}, cfg{
 		presetJewelry: true,
 	}))

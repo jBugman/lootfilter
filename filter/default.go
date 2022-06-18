@@ -20,6 +20,10 @@ var defaultFilter = Filter{
 		"Dragonscale Gauntlets",
 		"Cardinal Round Shield",
 		"Hubris Circlet",
+		"Crusader Gloves",
+		"Murder Mitts",
+		"Archon Kite Shield",
+		"Champion Kite Shield",
 	},
 
 	Chance: BaseTypes{
