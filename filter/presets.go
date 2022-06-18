@@ -29,3 +29,5 @@ var PresetBadJewelry = BaseTypes{"Coral Amulet", "Paua Amulet", "Gold Amulet", "
 
 // PresetBadBelts contains belts you usually skip.
 var PresetBadBelts = BaseTypes{"Cloth Belt", "Chain Belt", "Studded Belt", "Rustic Sash"}
+
+var PresetBadFlasks = BaseTypes{"Hybrid Flask"}

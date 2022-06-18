@@ -23,6 +23,9 @@ type Filter struct {
 	Evasion visibility
 
 	Chance BaseTypes
+
+	FlasksQual I
+	FlasksLvl  I
 }
 
 func (filter Filter) applyRules() []section {
@@ -282,14 +285,48 @@ func (filter Filter) applyRules() []section {
 	}
 
 	// Flasks
+	if filter.FlasksQual > 0 {
+		ss = append(ss, section{
+			block: block{
+				Visibility: Show,
+
+				Class:   Classes{"Flask"},
+				Quality: cmp{GTE, filter.FlasksQual},
+			},
+		})
+	}
 	ss = append(ss, section{
 		block: block{
 			Visibility: Hide,
 
 			Class:     Classes{"Flask"},
-			AreaLevel: cmp{GTE, I(50)},
-			ItemLevel: cmp{LTE, I(74)},
-			Quality:   cmp{LT, I(7)},
+			BaseTypes: PresetBadFlasks,
+		},
+		Hide: HideFully,
+	})
+	ss = append(ss, section{ // Leveling
+		block: block{
+			Visibility: Show,
+
+			Class:     Classes{"Flask"},
+			AreaLevel: cmp{LT, I(50)},
+		},
+	})
+	if filter.FlasksLvl > 0 {
+		ss = append(ss, section{
+			block: block{
+				Visibility: Show,
+
+				Class:     Classes{"Flask"},
+				ItemLevel: cmp{GTE, filter.FlasksLvl},
+			},
+		})
+	}
+	ss = append(ss, section{
+		block: block{
+			Visibility: Hide,
+
+			Class: Classes{"Flask"},
 		},
 		Hide: HideFully,
 	})

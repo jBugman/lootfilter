@@ -9,6 +9,9 @@ var defaultFilter = Filter{
 
 	MinScrolls: 5,
 
+	FlasksQual: 10,
+	FlasksLvl:  82,
+
 	Chance: BaseTypes{"Champion Kite Shield", "Ezomyte Dagger", "Fiend Dagger", "Prophecy Wand"},
 }
 
