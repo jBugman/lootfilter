@@ -4,16 +4,6 @@ import (
 	"strings"
 )
 
-var _t = true
-var _f = false
-
-var (
-	// TRUE is boolean true.
-	TRUE = &_t
-	// FALSE is boolean false.
-	FALSE = &_f
-)
-
 // Filter represents high level filter config.
 type Filter struct {
 	Chromatic bool
@@ -28,395 +18,233 @@ type Filter struct {
 	FlasksLvl  I
 }
 
-func (filter Filter) applyRules() []section {
-	var ss []section
+func (filter Filter) applyRules() []block {
+	var res []block
 
 	// 6 Sockets
-	ss = append(ss, section{
-		block: block{
-			Visibility: Show,
+	res = append(res, filter.Show(block{
+		Sockets: cmp{EQ, I(6)},
 
-			Sockets: cmp{EQ, I(6)},
-
-			FontSize:        defaultFontSize + 2,
-			TextColor:       Color6S,
-			BorderColor:     Color6S,
-			BackgroundColor: ColorBG,
-		},
-	})
+		FontSize:        fontSizeDefault + 2,
+		TextColor:       Color6S,
+		BorderColor:     Color6S,
+		BackgroundColor: ColorBG,
+	}))
 
 	// Veiled Items
-	ss = append(ss, section{
-		block: block{
-			Visibility: Show,
-
-			Rarity:         cmp{EQ, RarityRare},
-			Identified:     TRUE,
-			HasExplicitMod: `"Veil"`,
-
-			FontSize: defaultFontSize,
-		},
-	})
+	res = append(res, filter.Show(block{
+		Rarity:         cmp{EQ, RarityRare},
+		Identified:     TRUE,
+		HasExplicitMod: `"Veil"`,
+	}))
 
 	// Chancing bases
 	if filter.Chance != nil {
-		ss = append(ss,
-			section{
-				block: block{
-					Visibility: Show,
+		res = append(res, filter.Show(block{
+			BaseTypes: filter.Chance,
+			Rarity:    cmp{EQ, RarityNormal},
 
-					BaseTypes: filter.Chance,
-					Rarity:    cmp{EQ, RarityNormal},
-
-					BorderColor: ColorChance,
-				},
-			},
-		)
+			BorderColor: ColorChance,
+		}))
 	}
 
 	// Chromatic recipe
 	if filter.Chromatic {
-		ss = append(ss,
-			section{
-				block: block{
-					Visibility:  Show,
-					SocketGroup: "RGB",
-					Height:      cmp{EQ, I(3)},
-					Width:       cmp{EQ, I(1)},
+		res = append(res, filter.Show(block{
+			SocketGroup: "RGB",
+			Height:      cmp{EQ, I(3)},
+			Width:       cmp{EQ, I(1)},
 
-					FontSize:    defaultFontSize,
-					TextColor:   ColorChrome,
-					BorderColor: ColorChrome,
-				},
-			},
-			section{
-				block: block{
-					Visibility:  Show,
-					SocketGroup: "RGB",
-					Height:      cmp{EQ, I(2)},
-					Width:       cmp{EQ, I(2)},
+			TextColor:   ColorChrome,
+			BorderColor: ColorChrome,
+		}))
+		res = append(res, filter.Show(block{
+			SocketGroup: "RGB",
+			Height:      cmp{EQ, I(2)},
+			Width:       cmp{EQ, I(2)},
 
-					FontSize:    defaultFontSize,
-					TextColor:   ColorChrome,
-					BorderColor: ColorChrome,
-				},
-			},
-		)
+			TextColor:   ColorChrome,
+			BorderColor: ColorChrome,
+		}))
 	}
 
 	// Leveling
-	ss = append(ss,
-		section{
-			block: block{
-				Visibility: Hide,
+	res = append(res, filter.Hide(block{
+		Class:         PresetGear,
+		LinkedSockets: cmp{LT, I(4)},
+		DropLevel:     cmp{GTE, I(30)},
+	}, cfg{
+		presetGear: true,
+	}))
+	res = append(res, filter.Hide(block{
+		Class:         PresetMelee1H.And(PresetMelee2H).And(PresetShield).And(PresetCaster).And(PresetBow),
+		LinkedSockets: cmp{LT, I(3)},
+		DropLevel:     cmp{LT, I(40)},
+	}, cfg{
+		presetGear: true,
+	}))
+	res = append(res, filter.Hide(block{
+		Class:         PresetGear,
+		Rarity:        cmp{LT, RarityRare},
+		LinkedSockets: cmp{LT, I(4)},
+		ItemLevel:     cmp{LT, I(45)},
+	}, cfg{
+		presetGear: true,
+		minimize:   true,
+	}))
 
-				Class:         PresetGear,
-				Rarity:        cmp{LT, RarityUnique},
-				LinkedSockets: cmp{LT, I(4)},
-				DropLevel:     cmp{LT, I(40)},
-			},
-			Hide:          HideClickable,
-			NonInfluenced: true,
-		},
-	)
-	ss = append(ss,
-		section{
-			block: block{
-				Visibility: Hide,
+	res = append(res, filter.Hide(block{
+		Class:     PresetGear.And(PresetShield).And(PresetCaster),
+		DropLevel: cmp{LT, I(58)},
+	}, cfg{
+		presetGear: true,
+		minimize:   true,
+	}))
 
-				Class:         PresetMelee1H.And(PresetMelee2H).And(PresetShield).And(PresetCaster).And(PresetBow),
-				Rarity:        cmp{LT, RarityUnique},
-				LinkedSockets: cmp{LT, I(3)},
-				DropLevel:     cmp{LT, I(40)},
-			},
-			Hide:          HideClickable,
-			NonInfluenced: true,
-		},
-	)
-	ss = append(ss,
-		section{
-			block: block{
-				Visibility: Hide,
+	res = append(res, filter.Hide(block{
+		Class:   PresetGear.And(PresetShield).And(PresetCaster),
+		Rarity:  cmp{LT, RarityRare},
+		Sockets: cmp{LT, I(6)},
+	}, cfg{
+		presetGear: true,
+	}))
+	res = append(res, filter.Hide(block{
+		Class:  Classes{"Belt", "Amulet", "Ring"},
+		Rarity: cmp{LT, RarityRare},
+	}, cfg{
+		nonInfluenced: true,
+	}))
 
-				Class:         PresetGear,
-				Rarity:        cmp{LT, RarityRare},
-				LinkedSockets: cmp{LT, I(4)},
-				Sockets:       cmp{LT, I(6)},
-				ItemLevel:     cmp{LT, I(45)},
-			},
+	res = append(res, filter.Hide(block{
+		Class: PresetBow.And(PresetMelee1H).And(PresetMelee2H),
+	}, cfg{
+		presetGear: true,
+		minimize:   true,
+	}))
 
-			Hide: HideFully,
+	res = append(res, filter.Hide(block{
+		BaseTypes: PresetBadBelts.And(PresetBadJewelry),
+	}, cfg{
+		presetJewelry: true,
+	}))
 
-			NonInfluenced: true,
-		},
-	)
+	res = append(res, filter.Hide(block{
+		BaseTypes: BaseTypes{"Diamond Ring", "Amethyst Ring", "Unset Ring", "Moonstone Ring"},
+		ItemLevel: cmp{LT, I(82)},
+	}, cfg{
+		presetJewelry: true,
+	}))
 
-	ss = append(ss,
-		section{
-			block: block{
-				Visibility: Hide,
-
-				Class:     PresetGear.And(PresetShield).And(PresetCaster),
-				Rarity:    cmp{LT, RarityUnique},
-				Sockets:   cmp{LT, I(6)},
-				DropLevel: cmp{LT, I(58)},
-			},
-
-			Hide: HideFully,
-
-			NonInfluenced: true,
-		},
-	)
-
-	ss = append(ss,
-		section{
-			block: block{
-				Visibility: Hide,
-
-				Class:   PresetGear.And(PresetShield).And(PresetCaster),
-				Rarity:  cmp{LT, RarityRare},
-				Sockets: cmp{LT, I(6)},
-			},
-
-			Hide: HideClickable,
-
-			NonInfluenced: true,
-		},
-	)
-	ss = append(ss,
-		section{
-			block: block{
-				Visibility: Hide,
-
-				Class:  Classes{"Belt", "Amulet", "Ring"},
-				Rarity: cmp{LT, RarityRare},
-			},
-
-			Hide: HideClickable,
-
-			NonInfluenced: true,
-		},
-	)
-
-	ss = append(ss,
-		section{
-			block: block{
-				Visibility: Hide,
-
-				Class:   PresetBow.And(PresetMelee1H).And(PresetMelee2H),
-				Rarity:  cmp{LT, RarityUnique},
-				Sockets: cmp{LT, I(6)},
-			},
-
-			Hide: HideFully,
-
-			NonInfluenced: true,
-		},
-	)
-
-	ss = append(ss,
-		section{
-			block: block{
-				Visibility: Hide,
-
-				BaseTypes: PresetBadBelts.And(PresetBadJewelry),
-				Rarity:    cmp{LT, RarityUnique},
-			},
-
-			Hide: HideClickable,
-
-			NonInfluenced: true,
-		},
-	)
-
-	ss = append(ss,
-		section{
-			block: block{
-				Visibility: Hide,
-
-				BaseTypes: BaseTypes{"Diamond Ring", "Amethyst Ring", "Unset Ring", "Moonstone Ring"},
-				ItemLevel: cmp{LT, I(82)},
-				Rarity:    cmp{LT, RarityUnique},
-			},
-
-			Hide: HideClickable,
-
-			NonInfluenced: true,
-		},
-	)
-
-	ss = append(ss,
-		section{
-			block: block{
-				Visibility: Hide,
-
-				Class:     PresetCaster,
-				ItemLevel: cmp{LT, I(82)},
-				Rarity:    cmp{LT, RarityUnique},
-			},
-
-			Hide: HideClickable,
-
-			NonInfluenced: true,
-		},
-	)
+	res = append(res, filter.Hide(block{
+		Class:     PresetCaster,
+		ItemLevel: cmp{LT, I(82)},
+		Rarity:    cmp{LT, RarityUnique},
+	}, cfg{
+		presetGear: true,
+	}))
 
 	// Hide pure evasion bases
 	if filter.Evasion == Hide {
-		ss = append(ss,
-			section{
-				block: block{
-					Visibility: Hide,
-
-					Class:   PresetGear.And(PresetShield),
-					Rarity:  cmp{LT, RarityUnique},
-					Sockets: cmp{LT, I(6)},
-
-					BaseEvasion:      cmp{GT, I(0)},
-					BaseArmour:       cmp{EQ, I(0)},
-					BaseEnergyShield: cmp{EQ, I(0)},
-				},
-
-				Hide: HideFully,
-
-				NonInfluenced: true,
-			},
-		)
+		res = append(res, filter.Hide(block{
+			Class:            PresetGear.And(PresetShield),
+			BaseEvasion:      cmp{GT, I(0)},
+			BaseArmour:       cmp{EQ, I(0)},
+			BaseEnergyShield: cmp{EQ, I(0)},
+		}, cfg{
+			presetGear: true,
+			minimize:   true,
+		}))
 	}
 
 	// Flasks
 	if filter.FlasksQual > 0 {
-		ss = append(ss, section{
-			block: block{
-				Visibility: Show,
-
-				Class:   Classes{"Flask"},
-				Quality: cmp{GTE, filter.FlasksQual},
-			},
-		})
+		res = append(res, filter.Show(block{
+			Class:   Classes{"Flask"},
+			Quality: cmp{GTE, filter.FlasksQual},
+		}))
 	}
-	ss = append(ss, section{
-		block: block{
-			Visibility: Hide,
-
-			Class:     Classes{"Flask"},
-			BaseTypes: PresetBadFlasks,
-		},
-		Hide: HideFully,
-	})
-	ss = append(ss, section{ // Leveling
-		block: block{
-			Visibility: Show,
-
-			Class:     Classes{"Flask"},
-			AreaLevel: cmp{LT, I(50)},
-		},
-	})
+	res = append(res, filter.Hide(block{
+		Class:     Classes{"Flask"},
+		BaseTypes: PresetBadFlasks,
+	}, cfg{
+		minimize: true,
+	}))
+	res = append(res, filter.Show(block{ // Leveling
+		Class:     Classes{"Flask"},
+		AreaLevel: cmp{LT, I(50)},
+	}))
 	if filter.FlasksLvl > 0 {
-		ss = append(ss, section{
-			block: block{
-				Visibility: Show,
-
-				Class:     Classes{"Flask"},
-				ItemLevel: cmp{GTE, filter.FlasksLvl},
-			},
-		})
+		res = append(res, filter.Show(block{
+			Class:     Classes{"Flask"},
+			ItemLevel: cmp{GTE, filter.FlasksLvl},
+		}))
 	}
-	ss = append(ss, section{
-		block: block{
-			Visibility: Hide,
-
-			Class: Classes{"Flask"},
-		},
-		Hide: HideFully,
-	})
+	res = append(res, filter.Hide(block{
+		Class: Classes{"Flask"},
+	}, cfg{
+		minimize: true,
+	}))
 
 	// Gems
-	ss = append(ss, section{
-		block: block{
-			Visibility: Show,
+	res = append(res, filter.Show(block{
+		Class:     Classes{"Gem"},
+		BaseTypes: PresetGoodGems,
 
-			Class:     Classes{"Gem"},
-			BaseTypes: PresetGoodGems,
-
-			FontSize:        defaultFontSize + 4,
-			TextColor:       ColorGem,
-			BorderColor:     ColorGem,
-			BackgroundColor: ColorBG,
-		},
-	})
-	ss = append(ss, section{
-		block: block{
-			Visibility: Hide,
-
-			Class:            Classes{"Gem"},
-			AlternateQuality: FALSE,
-			Quality:          cmp{LT, I(7)},
-			GemLevel:         cmp{LT, I(18)},
-		},
-		Hide: HideFully,
-	})
+		FontSize:        fontSizeDefault + 4,
+		TextColor:       ColorGem,
+		BorderColor:     ColorGem,
+		BackgroundColor: ColorBG,
+	}))
+	res = append(res, filter.Hide(block{
+		Class:            Classes{"Gem"},
+		AlternateQuality: FALSE,
+		Quality:          cmp{LT, I(7)},
+		GemLevel:         cmp{LT, I(18)},
+	}, cfg{
+		minimize: true,
+	}))
 
 	// Fragments
-	ss = append(ss, section{
-		block: block{
-			Visibility: Show,
+	res = append(res, filter.Show(block{
+		Class: Classes{"Fragment"},
 
-			Class: Classes{"Fragment"},
-
-			FontSize:    defaultFontSize + 3,
-			TextColor:   ColorFragment,
-			BorderColor: ColorFragment,
-		},
-	})
+		FontSize:    fontSizeDefault + 2,
+		TextColor:   ColorFragment,
+		BorderColor: ColorFragment,
+	}))
 
 	// Maps
-	ss = append(ss, section{
-		block: block{
-			Visibility: Show,
+	res = append(res, filter.Show(block{
+		Class: Classes{"Map"},
 
-			Class: Classes{"Map"},
-
-			FontSize:        defaultFontSize + 1,
-			TextColor:       ColorMaps,
-			BorderColor:     ColorMaps,
-			BackgroundColor: ColorBG,
-		},
-	})
+		FontSize:        fontSizeDefault + 2,
+		TextColor:       ColorMaps,
+		BorderColor:     ColorMaps,
+		BackgroundColor: ColorBG,
+	}))
 
 	// Currency
 	if filter.MinScrolls > 0 {
-		ss = append(ss, section{
-			block: block{
-				Visibility: Hide,
-
-				BaseTypes: BaseTypes{"Scroll of Wisdom", "Portal Scroll"},
-				AreaLevel: cmp{GT, I(55)},
-				StackSize: cmp{LT, filter.MinScrolls},
-			},
-		})
+		res = append(res, filter.Hide(block{
+			BaseTypes: BaseTypes{"Scroll of Wisdom", "Portal Scroll"},
+			AreaLevel: cmp{GT, I(55)},
+			StackSize: cmp{LT, filter.MinScrolls},
+		}, nil))
 	}
-	ss = append(ss, section{
-		block: block{
-			Visibility: Hide,
+	res = append(res, filter.Hide(block{
+		BaseTypes: BaseTypes{"Engineer's Shard", "Transmutation Shard"},
+	}, cfg{
+		minimize: true,
+	}))
+	res = append(res, filter.Show(block{
+		Class: Classes{"Currency"},
 
-			BaseTypes: BaseTypes{"Engineer's Shard", "Transmutation Shard"},
-		},
-		Hide: HideFully,
-	})
-	ss = append(ss, section{
-		block: block{
-			Visibility: Show,
+		FontSize:    fontSizeDefault + 3,
+		TextColor:   ColorCurrency,
+		BorderColor: ColorCurrency,
+	}))
 
-			Class: Classes{"Currency"},
-
-			FontSize:    defaultFontSize + 3,
-			TextColor:   ColorCurrency,
-			BorderColor: ColorCurrency,
-		},
-	})
-
-	return ss
+	return res
 }
 
 func Render(f Filter) string {
@@ -430,50 +258,77 @@ func Render(f Filter) string {
 	return res
 }
 
-type section struct {
-	block
-
-	OneHanded bool
-	TwoHanded bool
-
-	NonInfluenced bool
-
-	Hide hideLevel
+func (Filter) Show(b block) block {
+	b.Visibility = Show
+	if b.FontSize == 0 {
+		b.FontSize = fontSizeDefault
+	}
+	return b
 }
 
-type hideLevel string
+func (Filter) Hide(b block, cfg hideConfig) block {
+	b.Visibility = Hide
+	b.FontSize = fontSizeHidden
+	b.DisableDropSound = true
 
-const (
-	// HideFully hides item, minimizes font and disables other decorations and sounds.
-	HideFully hideLevel = "fully"
-	// HideClickable hides item, makes font smaller and disables other decorations and sounds.
-	HideClickable hideLevel = "clickable"
-)
-
-func (sec section) String() string {
-	if sec.NonInfluenced {
-		sec.Elder = FALSE
-		sec.Shaper = FALSE
-		sec.Influence = InfluenceNone
+	if cfg == nil {
+		return b
 	}
 
-	switch sec.Hide {
-	case HideFully:
-		sec.FontSize = minFontSize
-		sec.BackgroundColor = ColorZero
-		sec.BorderColor = ColorZero
-		sec.DisableDropSound = true
-
-	case HideClickable:
-		sec.FontSize = clickableFontSize
-		sec.BackgroundColor = ColorZero
-		sec.BorderColor = ColorZero
-		sec.DisableDropSound = true
+	if cfg.PresetGear() {
+		b.Sockets = cmp{LT, I(6)}
+	}
+	presetItem := cfg.PresetGear() || cfg.PresetJewelry()
+	if presetItem {
+		if b.Rarity == nil {
+			b.Rarity = cmp{LT, RarityUnique}
+		}
 	}
 
-	return sec.block.String()
+	if cfg.NonInfluenced() || presetItem {
+		b.Elder = FALSE
+		b.Shaper = FALSE
+		b.Influence = InfluenceNone
+	}
+	if cfg.Minimize() {
+		b.FontSize = fontSizeMin
+		b.BackgroundColor = ColorZero
+		b.BorderColor = ColorZero
+		b.DisableDropSound = true
+	}
+
+	return b
 }
 
-func init() {
-	initBlockTemplate()
+type hideConfig interface {
+	NonInfluenced() bool
+
+	Minimize() bool
+
+	PresetGear() bool
+	PresetJewelry() bool
+}
+
+type cfg struct {
+	nonInfluenced bool
+	minimize      bool
+
+	presetGear    bool
+	presetJewelry bool
+}
+
+func (c cfg) NonInfluenced() bool {
+	return c.nonInfluenced
+}
+
+func (c cfg) Minimize() bool {
+	return c.minimize
+}
+
+func (c cfg) PresetGear() bool {
+	return c.presetGear
+}
+
+func (c cfg) PresetJewelry() bool {
+	return c.presetJewelry
 }

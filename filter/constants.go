@@ -1,8 +1,10 @@
 package filter
 
-const minFontSize = 18
-const clickableFontSize = 26
-const defaultFontSize = 33
+const (
+	fontSizeDefault = 33
+	fontSizeHidden  = fontSizeDefault - 5
+	fontSizeMin     = 18
+)
 
 type visibility string
 
@@ -59,4 +61,14 @@ const (
 	RarityRare rarity = "Rare"
 	// RarityUnique is for unique items.
 	RarityUnique rarity = "Unique"
+)
+
+var _t = true
+var _f = false
+
+var (
+	// TRUE is boolean true.
+	TRUE = &_t
+	// FALSE is boolean false.
+	FALSE = &_f
 )

@@ -137,7 +137,7 @@ func (b block) String() string {
 
 var blockTemplate template.Template
 
-func initBlockTemplate() {
+func init() {
 	blockTemplate = *template.Must(template.New("section").Parse(`{{ .Visibility }}
 	{{- if .Identified }}
 	Identified {{ .Identified }}{{- end }}
