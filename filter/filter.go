@@ -156,6 +156,26 @@ func (filter Filter) applyRules() []block {
 		}))
 	}
 
+	// Abyss Jewels
+	colorAbyss := hex("#36733A")
+	res = append(res, filter.Show(block{
+		Class: Classes{"Abyss Jewels"},
+
+		TextColor:       colorAbyss,
+		BorderColor:     colorAbyss,
+		BackgroundColor: ColorBG,
+	}))
+
+	// Cluster Jewels
+	colorCluster := hex("#8C8C8C")
+	res = append(res, filter.Show(block{
+		BaseTypes: BaseTypes{"Cluster Jewel"},
+
+		TextColor:       colorCluster,
+		BorderColor:     colorCluster,
+		BackgroundColor: ColorBG,
+	}))
+
 	// Flasks
 	if filter.FlasksQual > 0 {
 		res = append(res, filter.Show(block{
