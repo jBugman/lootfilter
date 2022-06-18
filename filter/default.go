@@ -12,7 +12,20 @@ var defaultFilter = Filter{
 	FlasksQual: 10,
 	FlasksLvl:  82,
 
-	Chance: BaseTypes{"Champion Kite Shield", "Ezomyte Dagger", "Fiend Dagger", "Prophecy Wand"},
+	Chance: BaseTypes{
+		"Champion Kite Shield",
+		"Ezomyte Dagger",
+		"Fiend Dagger",
+		"Prophecy Wand",
+	},
+
+	BadCards: BaseTypes{
+		"The Lover",
+		"The Carrion Crow",
+	},
+	GoodCards: BaseTypes{
+		"The Apothecary",
+	},
 }
 
 // Default is default SSF filter config.

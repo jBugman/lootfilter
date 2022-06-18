@@ -16,6 +16,9 @@ type Filter struct {
 
 	FlasksQual I
 	FlasksLvl  I
+
+	BadCards  BaseTypes
+	GoodCards BaseTypes
 }
 
 func (filter Filter) applyRules() []block {
@@ -223,6 +226,25 @@ func (filter Filter) applyRules() []block {
 	}, cfg{
 		minimize: true,
 	}))
+
+	// Div Cards
+	if filter.GoodCards != nil {
+		res = append(res, filter.Show(block{
+			Class:     Classes{"Divination Cards"},
+			BaseTypes: filter.GoodCards,
+
+			FontSize:        fontSizeDefault + 4,
+			TextColor:       ColorDivCard,
+			BorderColor:     ColorDivCard,
+			BackgroundColor: ColorBG,
+		}))
+	}
+	if filter.BadCards != nil {
+		res = append(res, filter.Hide(block{
+			Class:     Classes{"Divination Cards"},
+			BaseTypes: filter.BadCards,
+		}, nil))
+	}
 
 	// Fragments
 	res = append(res, filter.Show(block{

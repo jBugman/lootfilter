@@ -32,6 +32,8 @@ const (
 	ColorCurrency color = "170 158 130 255"
 	// ColorGem is PoE native color for currency.
 	ColorGem color = "27 162 155 255"
+	//
+	ColorDivCard color = "14 186 255 255"
 
 	// ColorFragment is color for fragments.
 	ColorFragment color = "140 0 0 255"
