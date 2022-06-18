@@ -1,0 +1,31 @@
+chromatic = true
+
+min_scrolls = 5
+
+hide_evasion = true
+
+chancing_bases = [
+  "Champion Kite Shield",
+  "Ezomyte Dagger",
+  "Fiend Dagger",
+  "Prophecy Wand",
+]
+
+min_drop_lvl_bases = 70
+good_bases = [
+  "Pig-Faced Bascinet",
+  "Full Dragonscale",
+  "Dragonscale Gauntlets",
+  "Cardinal Round Shield",
+  "Hubris Circlet",
+  "Crusader Gloves",
+  "Murder Mitts",
+  "Archon Kite Shield",
+  "Champion Kite Shield",
+]
+
+flask_min_quality = 10
+flask_min_ilvl = 82
+
+bad_cards = ["The Lover", "The Carrion Crow"]
+good_cards = ["The Apothecary"]

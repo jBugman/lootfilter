@@ -3,13 +3,13 @@ go 1.17
 module lootfilter
 
 require (
+	github.com/BurntSushi/toml v1.1.0
 	github.com/mgechev/revive v1.2.1
 	github.com/stretchr/testify v1.7.2
 	honnef.co/go/tools v0.3.2
 )
 
 require (
-	github.com/BurntSushi/toml v1.1.0 // indirect
 	github.com/chavacava/garif v0.0.0-20220316182200-5cad0b5181d4 // indirect
 	github.com/davecgh/go-spew v1.1.0 // indirect
 	github.com/fatih/color v1.13.0 // indirect

@@ -1,27 +1,29 @@
 package filter
 
+// spellchecker:words ilvl
+
 import (
 	"strings"
 )
 
 // Filter represents high level filter config.
 type Filter struct {
-	Chromatic bool
+	Chromatic bool `toml:"chromatic"`
 
-	MinScrolls I
+	MinScrolls I `toml:"min_scrolls"`
 
-	Evasion visibility
+	HideEvasion bool `toml:"hide_evasion"`
 
-	Chance BaseTypes
+	Chance BaseTypes `toml:"chancing_bases"`
 
-	GoodBases      BaseTypes
-	MinGearDropLvl I
+	GoodBases      BaseTypes `toml:"good_bases"`
+	MinGearDropLvl I         `toml:"min_drop_lvl_bases"`
 
-	FlasksQual I
-	FlasksLvl  I
+	FlasksMinQual I `toml:"flask_min_quality"`
+	FlasksMinILvl I `toml:"flask_min_ilvl"`
 
-	BadCards  BaseTypes
-	GoodCards BaseTypes
+	BadCards  BaseTypes `toml:"bad_cards"`
+	GoodCards BaseTypes `toml:"good_cards"`
 }
 
 func (filter Filter) applyRules() []block {
@@ -168,7 +170,7 @@ func (filter Filter) applyRules() []block {
 	}))
 
 	// Hide pure evasion bases
-	if filter.Evasion == Hide {
+	if filter.HideEvasion {
 		res = append(res, filter.Hide(block{
 			Class:            PresetGear.And(PresetShield),
 			BaseEvasion:      cmp{GT, I(0)},
@@ -201,10 +203,10 @@ func (filter Filter) applyRules() []block {
 	}))
 
 	// Flasks
-	if filter.FlasksQual > 0 {
+	if filter.FlasksMinQual > 0 {
 		res = append(res, filter.Show(block{
 			Class:   Classes{"Flask"},
-			Quality: cmp{GTE, filter.FlasksQual},
+			Quality: cmp{GTE, filter.FlasksMinQual},
 		}))
 	}
 	res = append(res, filter.Hide(block{
@@ -217,10 +219,10 @@ func (filter Filter) applyRules() []block {
 		Class:     Classes{"Flask"},
 		AreaLevel: cmp{LT, I(50)},
 	}))
-	if filter.FlasksLvl > 0 {
+	if filter.FlasksMinILvl > 0 {
 		res = append(res, filter.Show(block{
 			Class:     Classes{"Flask"},
-			ItemLevel: cmp{GTE, filter.FlasksLvl},
+			ItemLevel: cmp{GTE, filter.FlasksMinILvl},
 		}))
 	}
 	res = append(res, filter.Hide(block{
