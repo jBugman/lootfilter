@@ -14,6 +14,9 @@ type Filter struct {
 
 	Chance BaseTypes
 
+	GoodBases      BaseTypes
+	MinGearDropLvl I
+
 	FlasksQual I
 	FlasksLvl  I
 
@@ -71,11 +74,34 @@ func (filter Filter) applyRules() []block {
 		}))
 	}
 
+	if filter.GoodBases != nil {
+		res = append(res, filter.Show(block{
+			BaseTypes: filter.GoodBases,
+			Rarity:    cmp{EQ, RarityRare},
+			ItemLevel: cmp{GTE, I(78)},
+		}))
+		res = append(res, filter.Show(block{
+			BaseTypes: filter.GoodBases,
+			Rarity:    cmp{EQ, RarityNormal},
+			ItemLevel: cmp{GTE, I(80)},
+		}))
+	}
+	if filter.MinGearDropLvl > 0 {
+		res = append(res, filter.Hide(block{
+			Class:     PresetMelee1H.And(PresetMelee2H).And(PresetShield).And(PresetCaster).And(PresetBow),
+			DropLevel: cmp{LT, filter.MinGearDropLvl},
+		}, cfg{
+			presetGear: true,
+			minimize:   true,
+		}))
+	}
+
 	// Leveling
 	res = append(res, filter.Hide(block{
 		Class:         PresetGear,
 		LinkedSockets: cmp{LT, I(4)},
 		DropLevel:     cmp{GTE, I(30)},
+		ItemLevel:     cmp{LT, I(65)},
 	}, cfg{
 		presetGear: true,
 	}))
@@ -91,14 +117,6 @@ func (filter Filter) applyRules() []block {
 		Rarity:        cmp{LT, RarityRare},
 		LinkedSockets: cmp{LT, I(4)},
 		ItemLevel:     cmp{LT, I(45)},
-	}, cfg{
-		presetGear: true,
-		minimize:   true,
-	}))
-
-	res = append(res, filter.Hide(block{
-		Class:     PresetGear.And(PresetShield).And(PresetCaster),
-		DropLevel: cmp{LT, I(58)},
 	}, cfg{
 		presetGear: true,
 		minimize:   true,

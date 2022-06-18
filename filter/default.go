@@ -12,6 +12,16 @@ var defaultFilter = Filter{
 	FlasksQual: 10,
 	FlasksLvl:  82,
 
+	MinGearDropLvl: 70, // show all atlas bases
+
+	GoodBases: BaseTypes{
+		"Pig-Faced Bascinet",
+		"Full Dragonscale",
+		"Dragonscale Gauntlets",
+		"Cardinal Round Shield",
+		"Hubris Circlet",
+	},
+
 	Chance: BaseTypes{
 		"Champion Kite Shield",
 		"Ezomyte Dagger",
