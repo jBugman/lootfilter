@@ -19,6 +19,9 @@ type Filter struct {
 	GoodBases      BaseTypes `toml:"good_bases"`
 	MinGearDropLvl I         `toml:"min_drop_lvl_bases"`
 
+	RareGearMinILvl      I `toml:"rare_gear_min_ilvl"`
+	CraftingBasesMinILvl I `toml:"crafting_bases_min_ilvl"`
+
 	FlasksMinQual I `toml:"flask_min_quality"`
 	FlasksMinILvl I `toml:"flask_min_ilvl"`
 
@@ -77,16 +80,20 @@ func (filter Filter) applyRules() []block {
 	}
 
 	if filter.GoodBases != nil {
-		res = append(res, filter.Show(block{
-			BaseTypes: filter.GoodBases,
-			Rarity:    cmp{EQ, RarityRare},
-			ItemLevel: cmp{GTE, I(78)},
-		}))
-		res = append(res, filter.Show(block{
-			BaseTypes: filter.GoodBases,
-			Rarity:    cmp{EQ, RarityNormal},
-			ItemLevel: cmp{GTE, I(80)},
-		}))
+		if filter.RareGearMinILvl > 0 {
+			res = append(res, filter.Show(block{
+				BaseTypes: filter.GoodBases,
+				Rarity:    cmp{EQ, RarityRare},
+				ItemLevel: cmp{GTE, filter.RareGearMinILvl},
+			}))
+		}
+		if filter.CraftingBasesMinILvl > 0 {
+			res = append(res, filter.Show(block{
+				BaseTypes: filter.GoodBases,
+				Rarity:    cmp{EQ, RarityNormal},
+				ItemLevel: cmp{GTE, filter.CraftingBasesMinILvl},
+			}))
+		}
 	}
 	if filter.MinGearDropLvl > 0 {
 		res = append(res, filter.Hide(block{
@@ -221,7 +228,12 @@ func (filter Filter) applyRules() []block {
 	}))
 	if filter.FlasksMinILvl > 0 {
 		res = append(res, filter.Show(block{
-			Class:     Classes{"Flask"},
+			Class:     Classes{"Utility flask"},
+			ItemLevel: cmp{GTE, filter.FlasksMinILvl},
+		}))
+		res = append(res, filter.Show(block{
+			Class:     Classes{"flask"},
+			BaseTypes: BaseTypes{"Divine"},
 			ItemLevel: cmp{GTE, filter.FlasksMinILvl},
 		}))
 	}
