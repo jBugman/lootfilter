@@ -23,9 +23,25 @@ good_bases = [
   "Archon Kite Shield",
   "Champion Kite Shield",
 ]
+rare_gear_min_ilvl = 78
+crafting_bases_min_ilvl = 80
 
 flask_min_quality = 10
 flask_min_ilvl = 82
 
-bad_cards = ["The Lover", "The Carrion Crow"]
+bad_cards = [
+  "Destined to Crumble",
+  "Lantador's Lost Love",
+  "Prosperity",
+  "Struck by Lightning",
+  "The Carrion Crow",
+  "The Hermit",
+  "The King's Blade",
+  "The Lover",
+  "The Metalsmith's Gift",
+  "The Opulent",
+  "The Scarred Meadow",
+  "The Warden",
+  "Thunderous Skies",
+]
 good_cards = ["The Apothecary"]

@@ -194,6 +194,7 @@ func (filter Filter) applyRules() []block {
 	res = append(res, filter.Show(block{
 		Class: Classes{"Abyss Jewels"},
 
+		FontSize:        fontSizeDefault + 2,
 		TextColor:       colorAbyss,
 		BorderColor:     colorAbyss,
 		BackgroundColor: ColorBG,
@@ -204,6 +205,7 @@ func (filter Filter) applyRules() []block {
 	res = append(res, filter.Show(block{
 		BaseTypes: BaseTypes{"Cluster Jewel"},
 
+		FontSize:        fontSizeDefault + 2,
 		TextColor:       colorCluster,
 		BorderColor:     colorCluster,
 		BackgroundColor: ColorBG,
@@ -285,9 +287,10 @@ func (filter Filter) applyRules() []block {
 	res = append(res, filter.Show(block{
 		Class: Classes{"Fragment"},
 
-		FontSize:    fontSizeDefault + 2,
-		TextColor:   ColorFragment,
-		BorderColor: ColorFragment,
+		FontSize:        fontSizeDefault + 2,
+		TextColor:       ColorFragment,
+		BorderColor:     ColorFragment,
+		BackgroundColor: ColorBG,
 	}))
 
 	// Maps
