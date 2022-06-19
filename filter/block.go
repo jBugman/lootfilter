@@ -80,6 +80,7 @@ type block struct {
 	Visibility visibility
 
 	Identified *bool
+	Corrupted  *bool
 
 	Class     Classes
 	BaseTypes BaseTypes
@@ -141,6 +142,8 @@ func init() {
 	blockTemplate = *template.Must(template.New("section").Parse(`{{ .Visibility }}
 	{{- if .Identified }}
 	Identified {{ .Identified }}{{- end }}
+	{{- if .Corrupted }}
+	Corrupted {{ .Corrupted }}{{- end }}
 	{{- if .Class }}
 	Class {{ .Class }}{{- end }}
 	{{- if .BaseTypes }}

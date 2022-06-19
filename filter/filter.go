@@ -61,6 +61,16 @@ func (filter Filter) applyRules() []block {
 		}))
 	}
 
+	// Hide corrupted magic or less items.
+	res = append(res, filter.Hide(block{
+		Class:     PresetGear.And(PresetShield).And(PresetMelee1H).And(PresetMelee2H).And(PresetCaster).And(PresetBow),
+		Corrupted: TRUE,
+		Rarity:    cmp{LTE, RarityMagic},
+		Sockets:   cmp{LT, I(6)},
+	}, cfg{
+		minimize: true,
+	}))
+
 	// Chromatic recipe
 	if filter.Chromatic {
 		res = append(res, filter.Show(block{
