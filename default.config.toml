@@ -27,7 +27,9 @@ rare_gear_min_ilvl = 78
 crafting_bases_min_ilvl = 80
 
 flask_min_quality = 10
-flask_min_ilvl = 82
+life_flask_min_ilvl = 0
+mana_flask_min_ilvl = 0
+utility_flask_min_ilvl = 80
 
 bad_cards = [
   "Destined to Crumble",

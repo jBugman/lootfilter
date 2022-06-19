@@ -22,8 +22,10 @@ type Filter struct {
 	RareGearMinILvl      I `toml:"rare_gear_min_ilvl"`
 	CraftingBasesMinILvl I `toml:"crafting_bases_min_ilvl"`
 
-	FlasksMinQual I `toml:"flask_min_quality"`
-	FlasksMinILvl I `toml:"flask_min_ilvl"`
+	FlasksMinQual       I `toml:"flask_min_quality"`
+	LifeFlasksMinILvl   I `toml:"life_flask_min_ilvl"`
+	ManaFlasksMinILvl   I `toml:"mana_flask_min_ilvl"`
+	UtilityFlaskMinILvl I `toml:"utility_flask_min_ilvl"`
 
 	BadCards  BaseTypes `toml:"bad_cards"`
 	GoodCards BaseTypes `toml:"good_cards"`
@@ -228,15 +230,24 @@ func (filter Filter) applyRules() []block {
 		Class:     Classes{"Flask"},
 		AreaLevel: cmp{LT, I(50)},
 	}))
-	if filter.FlasksMinILvl > 0 {
+	if filter.LifeFlasksMinILvl > 0 {
+		res = append(res, filter.Show(block{
+			Class:     Classes{"Flask"},
+			BaseTypes: BaseTypes{"Divine"},
+			ItemLevel: cmp{GTE, filter.LifeFlasksMinILvl},
+		}))
+	}
+	if filter.ManaFlasksMinILvl > 0 {
+		res = append(res, filter.Show(block{
+			Class:     Classes{"Flask"},
+			BaseTypes: BaseTypes{"Divine"},
+			ItemLevel: cmp{GTE, filter.ManaFlasksMinILvl},
+		}))
+	}
+	if filter.UtilityFlaskMinILvl > 0 {
 		res = append(res, filter.Show(block{
 			Class:     Classes{"Utility flask"},
-			ItemLevel: cmp{GTE, filter.FlasksMinILvl},
-		}))
-		res = append(res, filter.Show(block{
-			Class:     Classes{"flask"},
-			BaseTypes: BaseTypes{"Divine"},
-			ItemLevel: cmp{GTE, filter.FlasksMinILvl},
+			ItemLevel: cmp{GTE, filter.UtilityFlaskMinILvl},
 		}))
 	}
 	res = append(res, filter.Hide(block{
