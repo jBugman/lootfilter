@@ -1,0 +1,6 @@
+[global_styles]
+background_color = "25 25 25"
+
+[six_links]
+enabled = true
+# color = ""
