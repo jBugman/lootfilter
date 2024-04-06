@@ -1,34 +1,52 @@
 import argv
 import config
-import envoy
+import erlang_ffi
 import filepath
+import fs
 import gleam/io
 import gleam/list
 import gleam/result
-import simplifile
+import gleam/string
 
 pub fn main() {
-  out_dir()
-  |> io.println
-
   case argv.load().arguments {
-    [path_in] -> build(path_in)
+    ["--debug", path_in] ->
+      case debug(path_in) {
+        Error(err) -> io.println_error(err)
+        Ok(s) -> io.println(s)
+      }
+    [path_in] ->
+      case run(path_in) {
+        Error(err) -> io.println_error(err)
+        Ok(_) -> io.println("done")
+      }
     _ -> io.println("usage: app [input_file]")
   }
 }
 
-const poe_dir_path = ["Documents", "My Games", "Path of Exile"]
-
-fn out_dir() -> String {
-  let homedir =
-    envoy.get("HOME")
-    |> result.unwrap("")
-
-  list.fold(poe_dir_path, homedir, filepath.join)
+fn debug(src_path: String) -> Result(String, String) {
+  use src <- result.try(fs.read_text(src_path))
+  let filter = config.parse(src)
+  Ok(filter)
 }
 
-fn build(src_path: String) {
-  let assert Ok(data) = simplifile.read(src_path)
-  config.parse(data)
-  |> io.println
+fn run(src_path: String) -> Result(Nil, String) {
+  use src <- result.try(fs.read_text(src_path))
+  use out_path <- result.try(filter_file_path(src_path))
+  io.println("writing to " <> out_path)
+  let filter = config.parse(src)
+  fs.write_text(filter, out_path)
+}
+
+const fixed_output_path = ["Documents", "My Games", "Path of Exile"]
+
+fn filter_file_path(src_path: String) -> Result(String, String) {
+  let name =
+    filepath.base_name(src_path)
+    |> filepath.strip_extension
+    |> string.append(".filter")
+  use homedir <- result.try(erlang_ffi.homedir())
+  list.fold(fixed_output_path, homedir, filepath.join)
+  |> filepath.join(name)
+  |> Ok
 }

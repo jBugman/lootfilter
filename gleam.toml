@@ -2,10 +2,9 @@ name = "lootfilter"
 version = "0.0.1"
 
 [dependencies]
-gleam_stdlib = "~> 0.34 or ~> 1.0"
+gleam_stdlib = "~> 0.36 or ~> 1.0"
 gleam_erlang = "~> 0.25"
 filepath = "~> 1.0"
-simplifile = "~> 1.6"
+simplifile = "~> 1.7"
 tom = "~> 0.3"
-envoy = "~> 1.0"
 argv = "~> 1.0"
