@@ -1,13 +1,14 @@
+import gleam/option.{None, Some}
+import gleam/string_tree
+import tom
+
+import actions/rgba.{RGBA}
 import block
 import conditions
 import decorations.{Decorations}
 import domain
-import gleam/option.{None, Some}
-import gleam/string_tree
-import poe/color
 import rarity
 import styles
-import tom
 
 pub fn parse(src: String) -> String {
   let assert Ok(src) = tom.parse(src)
@@ -26,7 +27,7 @@ pub fn parse(src: String) -> String {
   let tree = string_tree.new()
 
   let six_links = {
-    let color = Some(color.Custom("184 218 242"))
+    let color = Some(RGBA("184 218 242"))
     block.Show(
       conditions.six_link,
       Decorations(

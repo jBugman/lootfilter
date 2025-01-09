@@ -1,8 +1,9 @@
-import domain
 import gleam/option.{type Option, None, Some}
-import poe/beam.{type Beam, Beam}
-import poe/effect_color.{type Color} as color
-import poe/map_icon/size.{type Size}
+
+import actions/beam.{type Beam, Beam}
+import actions/color.{type Color}
+import actions/map_icon/size.{type Size}
+import domain
 
 pub type Rarity {
   Normal

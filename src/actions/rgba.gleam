@@ -2,14 +2,14 @@ import gleam/int
 import gleam/list
 import gleam/string
 
-pub type Color {
-  Custom(String)
+pub type RGBA {
+  RGBA(String)
   Greyscale(Int)
 }
 
-pub fn to_string(color: Color) -> String {
+pub fn to_string(color: RGBA) -> String {
   case color {
-    Custom(color) -> color
+    RGBA(color) -> color
 
     Greyscale(value) -> {
       int.to_string(value)

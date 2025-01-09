@@ -1,5 +1,7 @@
 version: "0.2"
 words:
+  - ilvl
+  - RGBA
   - simplifile
   - tink
 allowCompoundWords: true

@@ -1,8 +1,8 @@
-import poe/effect_color.{type Color}
-import poe/map_icon/map_icon.{MapIcon}
-import poe/map_icon/shape
-import poe/map_icon/size.{type Size}
-import poe/sound
+import actions/color.{type Color}
+import actions/map_icon/map_icon.{MapIcon}
+import actions/map_icon/shape
+import actions/map_icon/size.{type Size}
+import actions/sound
 
 pub const tink_sound = sound.Alert(16)
 

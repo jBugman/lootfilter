@@ -1,8 +1,9 @@
 import gleam/int
 import gleam/list
 import gleam/option.{type Option, None, Some}
-import poe/color.{type Color}
-import poe/sound.{type Sound}
+
+import actions/rgba.{type RGBA}
+import actions/sound.{type Sound}
 import rarity.{type Rarity}
 import styles.{type Styles}
 
@@ -12,9 +13,9 @@ type Props =
 pub type Decorations {
   Decorations(
     font_size: Option(Int),
-    text: Option(Color),
-    border: Option(Color),
-    background: Option(Color),
+    text: Option(RGBA),
+    border: Option(RGBA),
+    background: Option(RGBA),
     rarity: Rarity,
     sound: Sound,
   )
@@ -57,15 +58,15 @@ fn font_size(val: Option(Int)) -> Props {
   apply(val, fn(n) { ["SetFontSize " <> int.to_string(n)] })
 }
 
-fn text_color(val: Option(Color)) -> Props {
-  apply(val, fn(c) { ["SetTextColor " <> color.to_string(c)] })
+fn text_color(val: Option(RGBA)) -> Props {
+  apply(val, fn(c) { ["SetTextColor " <> rgba.to_string(c)] })
 }
 
-fn border_color(val: Option(Color)) -> Props {
-  apply(val, fn(c) { ["SetBorderColor " <> color.to_string(c)] })
+fn border_color(val: Option(RGBA)) -> Props {
+  apply(val, fn(c) { ["SetBorderColor " <> rgba.to_string(c)] })
 }
 
-fn background(local: Option(Color), global: Option(Color)) -> Props {
+fn background(local: Option(RGBA), global: Option(RGBA)) -> Props {
   option.or(local, global)
-  |> apply(fn(c) { ["SetBackgroundColor " <> color.to_string(c)] })
+  |> apply(fn(c) { ["SetBackgroundColor " <> rgba.to_string(c)] })
 }
