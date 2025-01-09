@@ -6,6 +6,14 @@ import actions/map_icon/map_icon.{MapIcon}
 import actions/map_icon/shape
 import actions/map_icon/size
 import actions/rgba.{Greyscale, RGB, RGBA}
+import block/actions
+
+pub fn action_map_icon_test() {
+  MapIcon(size.Medium, color.White, shape.Square)
+  |> actions.MapIcon
+  |> actions.to_string
+  |> should.equal("MinimapIcon 1 White Square")
+}
 
 pub fn map_icon_test() {
   MapIcon(size.Small, color.Red, shape.Circle)
