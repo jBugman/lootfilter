@@ -2,6 +2,7 @@ import block/base_types
 import block/class
 import block/defences
 import block/quality
+import block/rarity
 import block/sockets
 
 pub type Condition {
@@ -10,6 +11,7 @@ pub type Condition {
   Defence(defence: defences.Defence)
   Quality(quality: quality.Quality)
   Sockets(sockets: sockets.Sockets)
+  Rarity(rarity: rarity.Rarity)
 }
 
 pub fn to_string(cond: Condition) -> String {
@@ -19,5 +21,6 @@ pub fn to_string(cond: Condition) -> String {
     Defence(x) -> defences.to_string(x)
     Quality(x) -> quality.to_string(x)
     Sockets(x) -> sockets.to_string(x)
+    Rarity(x) -> rarity.to_string(x)
   }
 }
