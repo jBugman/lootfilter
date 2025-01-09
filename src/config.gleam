@@ -3,7 +3,7 @@ import conditions
 import decorations.{Decorations}
 import domain
 import gleam/option.{None, Some}
-import gleam/string_builder
+import gleam/string_tree
 import poe/color
 import rarity
 import styles
@@ -23,7 +23,7 @@ pub fn parse(src: String) -> String {
 
   let global_styles = styles.parse(src)
 
-  let builder = string_builder.new()
+  let tree = string_tree.new()
 
   let six_links = {
     let color = Some(color.Custom("184 218 242"))
@@ -41,8 +41,8 @@ pub fn parse(src: String) -> String {
   }
   six_links
   |> block.render(global_styles)
-  |> string_builder.append(builder, _)
-  |> string_builder.to_string
+  |> string_tree.append(tree, _)
+  |> string_tree.to_string
 }
 
 fn unwrap_string(value: tom.Toml) -> String {

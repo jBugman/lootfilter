@@ -2,7 +2,7 @@ import conditions.{type Conditions}
 import decorations.{type Decorations}
 import gleam/list
 import gleam/string
-import gleam/string_builder
+import gleam/string_tree
 import styles.{type Styles}
 
 pub type Block {
@@ -29,6 +29,6 @@ fn render_(
     |> list.map(string.append("\t", _))
     |> string.join("\n")
 
-  string_builder.from_strings([prefix, "\n", props, "\n\n"])
-  |> string_builder.to_string
+  string_tree.from_strings([prefix, "\n", props, "\n\n"])
+  |> string_tree.to_string
 }
