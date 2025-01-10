@@ -1,3 +1,5 @@
+import gleam/string_tree.{type StringTree}
+
 import poe/conditions/base_types
 import poe/conditions/class
 import poe/conditions/defences
@@ -23,4 +25,8 @@ pub fn to_string(cond: Condition) -> String {
     Sockets(x) -> sockets.to_string(x)
     Rarity(x) -> rarity.to_string(x)
   }
+}
+
+pub fn to_string_tree(cond: Condition) -> StringTree {
+  cond |> to_string |> string_tree.from_string
 }
