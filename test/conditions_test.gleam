@@ -17,11 +17,16 @@ pub fn base_type_2_test() {
   |> should.equal("BaseType \"Short Sword\"")
 }
 
-pub fn conditions_class_test() {
-  class.Class("Bows")
-  |> c.Class
+pub fn class_test() {
+  c.Class([class.Currency])
   |> c.to_string
-  |> should.equal("Class \"Bows\"")
+  |> should.equal("Class \"Currency\"")
+}
+
+pub fn classes_test() {
+  c.Class([class.Bows, class.Wands])
+  |> c.to_string
+  |> should.equal("Class \"Bows\" \"Wands\"")
 }
 
 pub fn conditions_rarity_test() {

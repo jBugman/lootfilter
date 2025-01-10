@@ -2,14 +2,14 @@ import gleam/int
 import gleam/list
 import gleam/string
 
-import poe/conditions/base_types
+import poe/conditions/base_type
 import poe/conditions/class
 import poe/conditions/rarity
 import poe/op.{type Op}
 
 pub type Condition {
-  BaseType(List(base_types.BaseType))
-  Class(class: class.Class)
+  BaseType(List(base_type.BaseType))
+  Class(List(class.Class))
 
   Rarity(op: Op, tier: rarity.Rarity)
 
@@ -24,10 +24,14 @@ pub type Condition {
 pub fn to_string(cond: Condition) -> String {
   case cond {
     BaseType(xs) -> {
-      let bt = xs |> list.map(base_types.to_string)
-      ["BaseType", ..bt] |> string.join(" ")
+      let xs = xs |> list.map(base_type.to_string)
+      ["BaseType", ..xs] |> string.join(" ")
     }
-    Class(x) -> class.to_string(x)
+
+    Class(xs) -> {
+      let xs = xs |> list.map(class.to_string)
+      ["Class", ..xs] |> string.join(" ")
+    }
 
     Rarity(op, tier) ->
       ["Rarity", op.to_string(op), rarity.to_string(tier)]
