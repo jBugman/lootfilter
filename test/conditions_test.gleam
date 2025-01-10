@@ -27,3 +27,9 @@ pub fn conditions_rarity_test() {
   |> conditions.to_string
   |> should.equal("Rarity < Rare")
 }
+
+pub fn sockets_gt_test() {
+  conditions.Sockets(op.GT, 0)
+  |> conditions.to_string
+  |> should.equal("Sockets > 0")
+}
