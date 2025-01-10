@@ -49,3 +49,9 @@ pub fn es_gte_test() {
   |> c.to_string
   |> should.equal("BaseEnergyShield >= 120")
 }
+
+pub fn quality_not_eq_test() {
+  c.Quality(op.NotEq, 8)
+  |> c.to_string
+  |> should.equal("Quality != 8")
+}

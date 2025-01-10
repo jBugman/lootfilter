@@ -3,7 +3,6 @@ import gleam/string
 
 import poe/conditions/base_types
 import poe/conditions/class
-import poe/conditions/quality
 import poe/conditions/rarity
 import poe/op.{type Op}
 
@@ -17,7 +16,7 @@ pub type Condition {
   Evasion(op: Op, value: Int)
   EnergyShield(op: Op, value: Int)
 
-  Quality(quality: quality.Quality)
+  Quality(op: Op, value: Int)
   Sockets(op: Op, amount: Int)
 }
 
@@ -34,7 +33,7 @@ pub fn to_string(cond: Condition) -> String {
     Evasion(op, value) -> comparable("BaseEvasion", op, value)
     EnergyShield(op, value) -> comparable("BaseEnergyShield", op, value)
 
-    Quality(x) -> quality.to_string(x)
+    Quality(op, value) -> comparable("Quality", op, value)
     Sockets(op, amount) -> comparable("Sockets", op, amount)
   }
 }
