@@ -2,18 +2,39 @@ import gleam/list
 import gleam/string
 
 import poe/actions.{type Action}
+import poe/actions/label/font_size.{FontSize}
 import poe/conditions.{type Condition}
 
 pub type Block {
   Show(conditions: List(Condition), actions: List(Action))
-  // Hide(conditions: Conditions)
+  Hide(List(Condition))
 }
 
 const tab = "  "
 
+const disable_drop_sound = "DisableDropSound"
+
 pub fn to_string(block: Block) -> String {
   case block {
-    Show(cond, act) ->
+    Show(cond, act) -> {
+      let has_sound_alert =
+        list.any(act, fn(action) {
+          case action {
+            actions.Alert(_, _) -> True
+            actions.PositionalAlert(_, _) -> True
+            actions.CustomAlert(_) -> True
+            _ -> False
+          }
+        })
+
+      let act =
+        list.append(act, [
+          case has_sound_alert {
+            True -> actions.DisableSoundIfAlert
+            False -> actions.EnableSound
+          },
+        ])
+
       [
         ["Show"],
         cond |> indent_with(conditions.to_string),
@@ -21,7 +42,16 @@ pub fn to_string(block: Block) -> String {
       ]
       |> list.flatten
       |> string.join("\n")
-    // Hide(cond) -> render_("Hide", cond, decorations.hidden, global_style)
+    }
+
+    Hide(cond) ->
+      [
+        ["Hide"],
+        cond |> indent_with(conditions.to_string),
+        [tab <> FontSize(20) |> font_size.to_string, tab <> disable_drop_sound],
+      ]
+      |> list.flatten
+      |> string.join("\n")
   }
 }
 
