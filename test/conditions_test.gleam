@@ -1,16 +1,20 @@
 import gleeunit/should
 
 import poe/conditions as c
-import poe/conditions/base_types
 import poe/conditions/class
 import poe/conditions/rarity
 import poe/op
 
-pub fn conditions_base_type_test() {
-  base_types.BaseTypes(["Short Sword", "Short Bow"])
-  |> c.BaseType
+pub fn base_type_1_test() {
+  c.BaseType(["Short Sword", "Short Bow"])
   |> c.to_string
   |> should.equal("BaseType \"Short Sword\" \"Short Bow\"")
+}
+
+pub fn base_type_2_test() {
+  c.BaseType(["Short Sword"])
+  |> c.to_string
+  |> should.equal("BaseType \"Short Sword\"")
 }
 
 pub fn conditions_class_test() {
