@@ -1,4 +1,4 @@
-import actions/color.{type Color}
+import poe/actions/color.{type Color}
 
 pub type Beam {
   Beam(Color)

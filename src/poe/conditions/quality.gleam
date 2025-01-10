@@ -1,7 +1,7 @@
 import gleam/int
 import gleam/string
 
-import block/op.{type Op}
+import poe/op.{type Op}
 
 pub type Quality {
   Quality(op: Op, value: Int)

@@ -1,6 +1,6 @@
 import gleam/string
 
-import actions/rgba.{type RGBA}
+import poe/actions/label/rgba.{type RGBA}
 
 pub type TextColor {
   TextColor(color: RGBA)

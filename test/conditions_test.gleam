@@ -1,11 +1,11 @@
 import gleeunit/should
 
-import block/base_types
-import block/class
-import block/conditions
-import block/op
-import block/rarity
-import block/rarity_tier
+import poe/conditions
+import poe/conditions/base_types
+import poe/conditions/class
+import poe/conditions/rarity
+import poe/conditions/rarity_tier
+import poe/op
 
 pub fn conditions_base_type_test() {
   base_types.BaseTypes(["Short Sword", "Short Bow"])

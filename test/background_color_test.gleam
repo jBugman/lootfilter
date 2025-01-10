@@ -1,7 +1,7 @@
 import gleeunit/should
 
-import actions/rgba.{RGB}
-import block/label/background_color.{BackgroundColor}
+import poe/actions/label/background_color.{BackgroundColor}
+import poe/actions/label/rgba.{RGB}
 
 pub fn background_color_test() {
   BackgroundColor(RGB(66, 33, 99))

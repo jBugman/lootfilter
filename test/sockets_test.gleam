@@ -1,7 +1,7 @@
 import gleeunit/should
 
-import block/op.{GT}
-import block/sockets.{Sockets}
+import poe/conditions/sockets.{Sockets}
+import poe/op.{GT}
 
 pub fn sockets_gt_test() {
   Sockets(GT, 0)

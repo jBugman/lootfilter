@@ -1,8 +1,8 @@
 import gleam/string
 
-import actions/color.{type Color}
-import actions/map_icon/shape.{type Shape}
-import actions/map_icon/size.{type Size}
+import poe/actions/color.{type Color}
+import poe/actions/map_icon/shape.{type Shape}
+import poe/actions/map_icon/size.{type Size}
 
 pub type MapIcon {
   MapIcon(size: Size, color: Color, shape: Shape)

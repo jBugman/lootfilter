@@ -1,9 +1,9 @@
-import block/base_types
-import block/class
-import block/defences
-import block/quality
-import block/rarity
-import block/sockets
+import poe/conditions/base_types
+import poe/conditions/class
+import poe/conditions/defences
+import poe/conditions/quality
+import poe/conditions/rarity
+import poe/conditions/sockets
 
 pub type Condition {
   BaseType(base_type: base_types.BaseType)

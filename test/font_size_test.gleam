@@ -1,6 +1,6 @@
 import gleeunit/should
 
-import block/label/font_size.{FontSize}
+import poe/actions/label/font_size.{FontSize}
 
 pub fn font_size_test() {
   FontSize(40)

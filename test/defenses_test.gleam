@@ -1,7 +1,7 @@
 import gleeunit/should
 
-import block/defences.{Armour, EnergyShield, Evasion}
-import block/op.{Eq, GTE, LT}
+import poe/conditions/defences.{Armour, EnergyShield, Evasion}
+import poe/op.{Eq, GTE, LT}
 
 pub fn armour_eq_test() {
   Armour(Eq, 100)

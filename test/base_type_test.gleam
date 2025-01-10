@@ -1,6 +1,6 @@
 import gleeunit/should
 
-import block/base_types.{BaseType, BaseTypes}
+import poe/conditions/base_types.{BaseType, BaseTypes}
 
 pub fn base_type_test() {
   BaseType("Short Sword")

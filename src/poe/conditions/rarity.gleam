@@ -1,7 +1,7 @@
 import gleam/string
 
-import block/op.{type Op}
-import block/rarity_tier.{type RarityTier}
+import poe/conditions/rarity_tier.{type RarityTier}
+import poe/op.{type Op}
 
 pub type Rarity {
   Rarity(op: Op, tier: RarityTier)

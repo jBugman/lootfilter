@@ -1,6 +1,6 @@
 import gleeunit/should
 
-import block/class.{Class, Classes}
+import poe/conditions/class.{Class, Classes}
 
 pub fn class_test() {
   Class("Bows")

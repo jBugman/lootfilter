@@ -1,12 +1,12 @@
 import gleeunit/should
 
-import actions/beam.{Beam}
-import actions/color
-import actions/map_icon/map_icon.{MapIcon}
-import actions/map_icon/shape
-import actions/map_icon/size
-import actions/rgba.{Greyscale, RGB, RGBA}
-import block/actions
+import poe/actions
+import poe/actions/beam.{Beam}
+import poe/actions/color
+import poe/actions/label/rgba.{Greyscale, RGB, RGBA}
+import poe/actions/map_icon/map_icon.{MapIcon}
+import poe/actions/map_icon/shape
+import poe/actions/map_icon/size
 
 pub fn action_map_icon_test() {
   MapIcon(size.Medium, color.White, shape.Square)

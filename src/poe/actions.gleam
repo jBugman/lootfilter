@@ -1,5 +1,5 @@
-import actions/beam
-import actions/map_icon/map_icon
+import poe/actions/beam
+import poe/actions/map_icon/map_icon
 
 pub type Action {
   MapIcon(map_icon: map_icon.MapIcon)

@@ -1,7 +1,7 @@
 import gleeunit/should
 
-import actions/rgba.{RGB}
-import block/label/border_color.{BorderColor}
+import poe/actions/label/border_color.{BorderColor}
+import poe/actions/label/rgba.{RGB}
 
 pub fn border_color_test() {
   BorderColor(RGB(66, 33, 99))
