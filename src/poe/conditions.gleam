@@ -11,7 +11,7 @@ pub type Condition {
   BaseType(base_type: base_types.BaseType)
   Class(class: class.Class)
 
-  Rarity(rarity: rarity.Rarity)
+  Rarity(op: Op, tier: rarity.Rarity)
 
   Armour(op: Op, value: Int)
   Evasion(op: Op, value: Int)
@@ -26,14 +26,16 @@ pub fn to_string(cond: Condition) -> String {
     BaseType(x) -> base_types.to_string(x)
     Class(x) -> class.to_string(x)
 
+    Rarity(op, tier) ->
+      ["Rarity", op.to_string(op), rarity.to_string(tier)]
+      |> string.join(" ")
+
     Armour(op, value) -> comparable("BaseArmour", op, value)
     Evasion(op, value) -> comparable("BaseEvasion", op, value)
     EnergyShield(op, value) -> comparable("BaseEnergyShield", op, value)
 
     Quality(x) -> quality.to_string(x)
     Sockets(op, amount) -> comparable("Sockets", op, amount)
-
-    Rarity(x) -> rarity.to_string(x)
   }
 }
 

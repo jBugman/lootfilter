@@ -4,7 +4,6 @@ import poe/conditions as c
 import poe/conditions/base_types
 import poe/conditions/class
 import poe/conditions/rarity
-import poe/conditions/rarity_tier
 import poe/op
 
 pub fn conditions_base_type_test() {
@@ -22,8 +21,7 @@ pub fn conditions_class_test() {
 }
 
 pub fn conditions_rarity_test() {
-  rarity.Rarity(op.LT, rarity_tier.Rare)
-  |> c.Rarity
+  c.Rarity(op.LT, rarity.Rare)
   |> c.to_string
   |> should.equal("Rarity < Rare")
 }
